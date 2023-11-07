@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        // Datenbankverbindung
+        //Datenbankverbindung
         var conn = DbConnection.getConnection();
         var statement = conn.createStatement();
 
@@ -20,7 +20,6 @@ public class Main {
             "kontonummer" int REFERENCES "Konto"
             );
             CREATE TABLE IF NOT EXISTS "Transaktion" (
-            "idBenutzer" int REFERENCES "Benutzer",
             "kontonummer" int REFERENCES "Konto",
             "empfaengerIBAN" char not null,
             "verwendungszweck" varchar(255),
@@ -28,12 +27,11 @@ public class Main {
             )
             """);
 
-        // LogIn
-        // Eingabe
+        //Login Eingabe
         Scanner scanner = new Scanner(System.in);
         System.out.print("Benutzername eingeben: ");
         String benutzername = scanner.nextLine();
-        System.out.print("\nPasswort eingeben: ");
+        System.out.print("Passwort eingeben: ");
         String passwort = scanner.nextLine();
 
         //Prüfung

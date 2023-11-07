@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d37fd6d-de54-44a9-af8b-a41a857861c3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Konto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/e6b522aa-368c-44ca-80ca-a670e66b3156.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/e6b522aa-368c-44ca-80ca-a670e66b3156.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DbConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DbConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699365988107</updated>
       <workItem from="1699365989176" duration="1871000" />
-      <workItem from="1699383263457" duration="486000" />
+      <workItem from="1699383263457" duration="1026000" />
     </task>
     <servers />
   </component>
@@ -93,7 +95,13 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
