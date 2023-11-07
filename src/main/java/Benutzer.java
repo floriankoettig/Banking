@@ -1,15 +1,17 @@
 public class Benutzer {
     protected int idBenutzer;
+    protected int benutzername;
     protected String vorname;
     protected String nachname;
-    protected String password;
+    protected String passwort;
     protected int kontonummer;
 
-    public Benutzer(int idBenutzer, String vorname, String nachname, String password, int kontonummer) {
+    public Benutzer(int idBenutzer, int benutzername, String vorname, String nachname, String passwort, int kontonummer) {
         this.idBenutzer = idBenutzer;
+        this.benutzername = benutzername;
         this.vorname = vorname;
         this.nachname = nachname;
-        this.password = password;
+        this.passwort = passwort;
         this.kontonummer = kontonummer;
     }
 
@@ -19,6 +21,14 @@ public class Benutzer {
 
     public void setIdBenutzer(int idBenutzer) {
         this.idBenutzer = idBenutzer;
+    }
+
+    public int getBenutzername() {
+        return benutzername;
+    }
+
+    public void setBenutzername(int benutzername) {
+        this.benutzername = benutzername;
     }
 
     public String getVorname() {
@@ -37,12 +47,12 @@ public class Benutzer {
         this.nachname = nachname;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswort() {
+        return passwort;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswort(String passwort) {
+        this.passwort = passwort;
     }
 
     public int getKontonummer() {
