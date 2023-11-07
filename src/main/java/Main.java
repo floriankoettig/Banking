@@ -19,6 +19,7 @@ public class Main {
             "kontonummer" int REFERENCES "Konto"
             );
             """);
+
         // LogIn
         // Eingabe
         Scanner scanner = new Scanner(System.in);
@@ -28,5 +29,6 @@ public class Main {
         String trypasswort = scanner.nextLine();
 
         //Prüfung
+        //94cbfbb01a39316c0ff7f0bfe6499a506437b5bf
     }
 }
