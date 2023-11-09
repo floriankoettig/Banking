@@ -1,6 +1,12 @@
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/*
+!!!
+erstellt mal bitte einen neuen branch, wenn ihr was pusht
+!!!
+ */
+
 public class Main {
     public static void main(String[] args) throws SQLException {
         //Datenbankverbindung
