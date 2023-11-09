@@ -1,0 +1,59 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"4d37fd6d-de54-44a9-af8b-a41a857861c3\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Anmeldung.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Benutzerverwaltung.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Main.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Main.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"Banking\" type=\"f1a62948:ProjectNode\" />\r\n              </path>\r\n            </expand>\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2XqoUL8smoaNggTqSNIgoDhJl1S\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"git-widget-placeholder\": \"login\",\r\n    \"last_opened_file_path\": \"C:/Users/koettig/projects/HSW/3. Semester/JDBCNotes\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"project.structure.last.edited\": \"Project\",\r\n    \"project.structure.proportion\": \"0.15\",\r\n    \"project.structure.side.proportion\": \"0.2\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Anmeldung\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Anmeldung\" />\r\n      <module name=\"Banking.main\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Anmeldung\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"4d37fd6d-de54-44a9-af8b-a41a857861c3\" name=\"Changes\" comment=\"\" />\r\n      <created>1699365988107</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1699365988107</updated>\r\n      <workItem from=\"1699365989176\" duration=\"1871000\" />\r\n      <workItem from=\"1699383263457\" duration=\"1026000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"CUSTOM_BOOLEAN_PROPERTIES\">\r\n                <map>\r\n                  <entry key=\"Show.Git.Branches\" value=\"true\" />\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -6,8 +6,6 @@
+   <component name="ChangeListManager">
+     <list default="true" id="4d37fd6d-de54-44a9-af8b-a41a857861c3" name="Changes" comment="">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/Anmeldung.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Benutzerverwaltung.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -68,6 +66,7 @@
+     "project.structure.last.edited": "Project",
+     "project.structure.proportion": "0.15",
+     "project.structure.side.proportion": "0.2",
++    "settings.editor.selected.configurable": "preferences.customizations",
+     "vue.rearranger.settings.migration": "true"
+   }
+ }]]></component>
+@@ -102,6 +101,21 @@
+     <option name="version" value="3" />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
++    <option name="RECENT_FILTERS">
++      <map>
++        <entry key="Branch">
++          <value>
++            <list>
++              <RecentGroup>
++                <option name="FILTER_VALUES">
++                  <option value="origin/login" />
++                </option>
++              </RecentGroup>
++            </list>
++          </value>
++        </entry>
++      </map>
++    </option>
+     <option name="TAB_STATES">
+       <map>
+         <entry key="MAIN">
+@@ -118,4 +132,8 @@
+       </map>
+     </option>
+   </component>
++  <component name="XSLT-Support.FileAssociations.UIState">
++    <expand />
++    <select />
++  </component>
+ </project>
+\ No newline at end of file
