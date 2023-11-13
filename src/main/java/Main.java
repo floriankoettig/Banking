@@ -41,6 +41,22 @@ public class Main {
         String passwort = scanner.nextLine();
 
         //Prüfung
+
+
+
+        System.out.println("Login erfolgreich");
+        System.out.println();
+
         //94cbfbb01a39316c0ff7f0bfe6499a506437b5bf
+        // Actions
+        System.out.println("Was möchtest du tun?");
+        System.out.println("1. Kontostand abfragen");
+        System.out.println("2. Kontoauszug exportieren");
+        System.out.println("3. Überweisung tätigen");
+        String action = scanner.nextLine();
+
+        // 1.
+        System.out.println("Hallo " + benutzername);
+        System.out.println("Dein Kontostand: ");
     }
 }
