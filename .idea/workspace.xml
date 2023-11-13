@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d37fd6d-de54-44a9-af8b-a41a857861c3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+    <list default="true" id="4d37fd6d-de54-44a9-af8b-a41a857861c3" name="Changes" comment="Login">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Kontoauszug.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e6b522aa-368c-44ca-80ca-a670e66b3156.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_09_11_2023_15_25__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_09_11_2023_15_25__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Benutzerverwaltung.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Benutzerverwaltung.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Transaktion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Transaktion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DbConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DbConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +69,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="2XqoUL8smoaNggTqSNIgoDhJl1S" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -91,7 +96,7 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration name="Anmeldung" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Anmeldung" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Anmeldung" />
       <module name="Banking.main" />
       <method v="2">
@@ -100,7 +105,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Anmeldung" />
         <item itemvalue="Application.Anmeldung" />
         <item itemvalue="Application.Anmeldung" />
       </list>
@@ -117,6 +121,14 @@
       <workItem from="1699365989176" duration="1871000" />
       <workItem from="1699383263457" duration="1026000" />
     </task>
+    <task id="LOCAL-00001" summary="Login">
+      <created>1699881937596</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699881937596</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,6 +150,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Login" />
+    <option name="LAST_COMMIT_MESSAGE" value="Login" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

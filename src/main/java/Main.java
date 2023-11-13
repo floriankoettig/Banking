@@ -1,5 +1,11 @@
 import java.sql.SQLException;
+import java.sql.SQLOutput;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /*
 !!!
@@ -33,30 +39,9 @@ public class Main {
             )
             """);
 
-        //Login Eingabe
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Benutzername eingeben: ");
-        String benutzername = scanner.nextLine();
-        System.out.print("Passwort eingeben: ");
-        String passwort = scanner.nextLine();
-
-        //Prüfung
-
-
-
-        System.out.println("Login erfolgreich");
-        System.out.println();
-
         //94cbfbb01a39316c0ff7f0bfe6499a506437b5bf
-        // Actions
-        System.out.println("Was möchtest du tun?");
-        System.out.println("1. Kontostand abfragen");
-        System.out.println("2. Kontoauszug exportieren");
-        System.out.println("3. Überweisung tätigen");
-        String action = scanner.nextLine();
 
-        // 1.
-        System.out.println("Hallo " + benutzername);
-        System.out.println("Dein Kontostand: ");
+        }
     }
-}
+
+
