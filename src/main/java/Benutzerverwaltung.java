@@ -21,6 +21,7 @@ public class Benutzerverwaltung {
             scanner.nextLine();
 
             if (option == 1) {
+                System.out.println("Registrierung");
                 System.out.print("Benutzername eingeben: ");
                 String benutzername = scanner.nextLine();
                 System.out.print("Vorname eingeben: ");
@@ -28,15 +29,16 @@ public class Benutzerverwaltung {
                 System.out.print("Nachname eingeben: ");
                 String nachname = scanner.nextLine();
                 System.out.print("Passwort eingeben: ");
-                String passwort = scanner.nextLine();
-                benutzerdaten.put(benutzername, passwort);
-                Benutzerverwaltung.registriereBenutzer(benutzername, vorname, nachname, passwort);
-                System.out.println("Benutzer erfolgreich registriert.");
+                String password = scanner.nextLine();
+                benutzerdaten.put(benutzername, password);
+                Benutzerverwaltung.registriereBenutzer(benutzername, vorname, nachname, password);
             } else if (option == 2) {
+                System.out.println("Anmeldung");
                 System.out.print("Benutzername eingeben: ");
                 String benutzername = scanner.nextLine();
                 System.out.print("Passwort eingeben: ");
                 String passwort = scanner.nextLine();
+
 
                 if (benutzerdaten.containsKey(benutzername) && benutzerdaten.get(benutzername).equals(passwort)) {
                     System.out.println("Anmeldung erfolgreich!");
@@ -48,10 +50,10 @@ public class Benutzerverwaltung {
             }
         }
     }
-    private static void registriereBenutzer(String benutzername, String vorname, String nachname, String passwort) {
+    private static void registriereBenutzer(String benutzername, String vorname, String nachname, String password) {
         try {
             String insertQuery = """
-            INSERT INTO "Benutzer" ("benutzername", "vorname", "nachname", "passwort")
+            INSERT INTO "Benutzer" ("benutzername", "vorname", "nachname", "password")
             VALUES (?, ?, ?, ?)
             """;
             PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
@@ -59,7 +61,7 @@ public class Benutzerverwaltung {
             preparedStatement.setString(1, benutzername);
             preparedStatement.setString(2, vorname);
             preparedStatement.setString(3, nachname);
-            preparedStatement.setString(4, passwort);
+            preparedStatement.setString(4, password);
 
             preparedStatement.executeUpdate();
             preparedStatement.close();

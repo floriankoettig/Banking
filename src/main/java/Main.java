@@ -26,6 +26,7 @@ public class Main {
             );
             CREATE TABLE IF NOT EXISTS "Benutzer" (
             "idBenutzer" UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+            "benutzername" varchar(255) not null,
             "vorname" varchar(255) not null,
             "nachname" varchar(255) not null,
             "password" varchar(255) not null,
