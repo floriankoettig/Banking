@@ -57,11 +57,11 @@ public class Transaktion {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Was möchtest du tun?");
         System.out.println("1. Kontostand abfragen");
         System.out.println("2. Kontoauszug exportieren");
         System.out.println("3. Überweisung tätigen");
         System.out.println("4. Massenüberweisung per CSV");
+        System.out.print("Was möchtest du tun?");
     int auswahl = scanner.nextInt();
         scanner.nextLine();
 
