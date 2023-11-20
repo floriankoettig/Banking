@@ -1,5 +1,5 @@
 public class Transaktion {
-    //protected int transaktionID;
+    //protected int idTransaktion;
     protected int kontonummer;
     protected String empfaengerIBAN;
     protected String verwendungszweck;

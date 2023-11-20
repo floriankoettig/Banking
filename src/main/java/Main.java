@@ -1,12 +1,6 @@
 import java.sql.SQLException;
 import java.util.Scanner;
 
-/*
-!!!
-erstellt mal bitte einen neuen branch, wenn ihr was pusht
-!!!
- */
-
 public class Main {
     public static void main(String[] args) throws SQLException {
         //Datenbankverbindung
@@ -14,33 +8,35 @@ public class Main {
         var statement = conn.createStatement();
 
         statement.execute("""
-            CREATE TABLE IF NOT EXISTS "Konto" (
-            "kontonummer" serial PRIMARY KEY,
-            "kontostand" double
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        CREATE TABLE IF NOT EXISTS "Benutzer" (
+            "idBenutzer" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            "benutzername" VARCHAR(255) UNIQUE NOT NULL,
+            "vorname" VARCHAR(255) NOT NULL,
+            "nachname" VARCHAR(255) NOT NULL,
+            "password" VARCHAR(255) NOT NULL,
+            "kontonummer" INT UNIQUE REFERENCES "Konto"
             );
-            CREATE TABLE IF NOT EXISTS "Benutzer" (
-            "idBenutzer" UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
-            "vorname" varchar(255) not null,
-            "nachname" varchar(255) not null,
-            "password" varchar(255) not null,
-            "kontonummer" int REFERENCES "Konto"
+        CREATE TABLE IF NOT EXISTS "Konto" (
+            "kontonummer" SERIAL PRIMARY KEY,
+            "kontostand" DECIMAL(15, 2) DEFAULT 0.00,
+            "idBenutzer" UUID REFERENCES "Benutzer"
             );
-            CREATE TABLE IF NOT EXISTS "Transaktion" (
-            "kontonummer" int REFERENCES "Konto",
-            "empfaengerIBAN" char not null,
-            "verwendungszweck" varchar(255),
-            "betrag" int not null
+        CREATE TABLE IF NOT EXISTS "Transaktion" (
+            "idTransaktion" SERIAL PRIMARY KEY,
+            "kontonummer" INT REFERENCES "Konto",
+            "empfaengerKontonummer" VARCHAR(34) NOT NULL,
+            "verwendungszweck" VARCHAR(255),
+            "betrag" DECIMAL(15,2) NOT NULL,
+            "timestamp" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
-            """);
+        """);
 
-        //Login Eingabe
+        //Login
         Scanner scanner = new Scanner(System.in);
         System.out.print("Benutzername eingeben: ");
         String benutzername = scanner.nextLine();
         System.out.print("Passwort eingeben: ");
         String passwort = scanner.nextLine();
-
-        //Prüfung
-        //94cbfbb01a39316c0ff7f0bfe6499a506437b5bf
     }
 }
