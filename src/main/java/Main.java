@@ -1,42 +1,53 @@
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
-        //Datenbankverbindung
-        var conn = DbConnection.getConnection();
-        var statement = conn.createStatement();
-
-        statement.execute("""
-        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-        CREATE TABLE IF NOT EXISTS "Benutzer" (
-            "idBenutzer" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-            "benutzername" VARCHAR(255) UNIQUE NOT NULL,
-            "vorname" VARCHAR(255) NOT NULL,
-            "nachname" VARCHAR(255) NOT NULL,
-            "password" VARCHAR(255) NOT NULL,
-            "kontonummer" INT UNIQUE REFERENCES "Konto"
-            );
-        CREATE TABLE IF NOT EXISTS "Konto" (
-            "kontonummer" SERIAL PRIMARY KEY,
-            "kontostand" DECIMAL(15, 2) DEFAULT 0.00,
-            "idBenutzer" UUID REFERENCES "Benutzer"
-            );
-        CREATE TABLE IF NOT EXISTS "Transaktion" (
-            "idTransaktion" SERIAL PRIMARY KEY,
-            "kontonummer" INT REFERENCES "Konto",
-            "empfaengerKontonummer" VARCHAR(34) NOT NULL,
-            "verwendungszweck" VARCHAR(255),
-            "betrag" DECIMAL(15,2) NOT NULL,
-            "timestamp" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """);
-
-        //Login
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Benutzername eingeben: ");
-        String benutzername = scanner.nextLine();
-        System.out.print("Passwort eingeben: ");
-        String passwort = scanner.nextLine();
+        Benutzerverwaltung benutzerverwaltung = new Benutzerverwaltung();
+        System.out.println("Willkommen bei der Bank!");
+
+        while (true) {
+            System.out.println("1. Registrieren");
+            System.out.println("2. Anmelden");
+            System.out.println("3. Beenden");
+            System.out.print("Wähle eine Option: ");
+            int option = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (option) {
+                case 1: //Registrierung
+                    System.out.print("Benutzername eingeben: ");
+                    String benutzername = scanner.nextLine();
+                    System.out.print("Vorname eingeben: ");
+                    String vorname = scanner.nextLine();
+                    System.out.print("Nachname eingeben: ");
+                    String nachname = scanner.nextLine();
+                    System.out.print("Passwort eingeben: ");
+                    String passwort = scanner.nextLine();
+
+                    benutzerverwaltung.registrieren(benutzername, vorname, nachname, passwort);
+                    System.out.println("Benutzer erfolgreich registriert.");
+                    break;
+                case 2: //Anmeldung
+                    System.out.print("Benutzername eingeben: ");
+                    benutzername = scanner.nextLine();
+                    System.out.print("Passwort eingeben: ");
+                    passwort = scanner.nextLine();
+
+                    if (benutzerverwaltung.anmelden(benutzername, passwort)) {
+                        System.out.println("Anmeldung erfolgreich!");
+                        //todo: Weitere Aktionen nach erfolgreicher Anmeldung
+                    } else {
+                        System.out.println("Falsche Anmeldedaten.");
+                    }
+                    break;
+                case 3: //Beenden
+                    System.out.println("Anwendung wird beendet.");
+                    return;
+                default:
+                    System.out.println("Ungültige Option.");
+                    break;
+            }
+        }
     }
 }

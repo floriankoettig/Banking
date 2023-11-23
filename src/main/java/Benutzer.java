@@ -4,15 +4,13 @@ public class Benutzer {
     protected String vorname;
     protected String nachname;
     protected String passwort;
-    protected int kontonummer;
 
-    public Benutzer(int idBenutzer, int benutzername, String vorname, String nachname, String passwort, int kontonummer) {
+    public Benutzer(int idBenutzer, int benutzername, String vorname, String nachname, String passwort) {
         this.idBenutzer = idBenutzer;
         this.benutzername = benutzername;
         this.vorname = vorname;
         this.nachname = nachname;
         this.passwort = passwort;
-        this.kontonummer = kontonummer;
     }
 
     public int getIdBenutzer() {
@@ -55,11 +53,4 @@ public class Benutzer {
         this.passwort = passwort;
     }
 
-    public int getKontonummer() {
-        return kontonummer;
-    }
-
-    public void setKontonummer(int kontonummer) {
-        this.kontonummer = kontonummer;
-    }
 }
