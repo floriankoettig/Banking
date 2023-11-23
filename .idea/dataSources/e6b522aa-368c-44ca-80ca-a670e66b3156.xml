@@ -479,7 +479,7 @@
 43447||43445|C|G
 43447||-9223372036854775808|T|G
 43447||43445|T|G</Grants>
-      <IntrospectionStateNumber>136113</IntrospectionStateNumber>
+      <IntrospectionStateNumber>136155</IntrospectionStateNumber>
       <ServerVersion>14.1</ServerVersion>
       <StartupTime>1696372510</StartupTime>
       <TimeZones>true ACDT
@@ -1421,7 +1421,7 @@ false posixrules
 13390||10|C|G
 13390||-9223372036854775808|U|G
 13390||10|U|G</Grants>
-      <IntrospectionStateNumber>136113</IntrospectionStateNumber>
+      <IntrospectionStateNumber>136155</IntrospectionStateNumber>
       <ObjectId>16417</ObjectId>
       <OwnerName>fmkoettig</OwnerName>
     </database>
@@ -5469,7 +5469,7 @@ false posixrules
     <schema id="445" parent="38" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>136113</IntrospectionStateNumber>
+      <IntrospectionStateNumber>136155</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>135856</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -5581,216 +5581,275 @@ false posixrules
       <LanguageName>c</LanguageName>
       <OwnerName>postgres</OwnerName>
     </routine>
-    <sequence id="456" parent="445" name="Konto_kontonummer_seq">
+    <sequence id="456" parent="445" name="Transaktion_idTransaktion_seq">
       <DasType>integer|0s</DasType>
-      <ObjectId>84367</ObjectId>
+      <ObjectId>84485</ObjectId>
       <SequenceIdentity>1(1)</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>136101</StateNumber>
+      <StateNumber>136153</StateNumber>
       <OwnerName>fmkoettig</OwnerName>
     </sequence>
     <table id="457" parent="445" name="Benutzer">
-      <ObjectId>84357</ObjectId>
-      <StateNumber>136106</StateNumber>
+      <ObjectId>84440</ObjectId>
+      <StateNumber>136146</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>fmkoettig</OwnerName>
     </table>
     <table id="458" parent="445" name="Konto">
-      <ObjectId>84368</ObjectId>
-      <StateNumber>136105</StateNumber>
+      <ObjectId>84450</ObjectId>
+      <StateNumber>136146</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>fmkoettig</OwnerName>
     </table>
-    <argument id="459" parent="446">
+    <table id="459" parent="445" name="Transaktion">
+      <ObjectId>84486</ObjectId>
+      <StateNumber>136153</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>fmkoettig</OwnerName>
+    </table>
+    <argument id="460" parent="446">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="460" parent="447">
+    <argument id="461" parent="447">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="461" parent="448">
+    <argument id="462" parent="448">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="462" parent="448" name="namespace">
+    <argument id="463" parent="448" name="namespace">
       <DasType>uuid|0s</DasType>
       <Position>1</Position>
     </argument>
-    <argument id="463" parent="448" name="name">
+    <argument id="464" parent="448" name="name">
       <DasType>text|0s</DasType>
       <Position>2</Position>
     </argument>
-    <argument id="464" parent="449">
+    <argument id="465" parent="449">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="465" parent="450">
+    <argument id="466" parent="450">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="466" parent="450" name="namespace">
+    <argument id="467" parent="450" name="namespace">
       <DasType>uuid|0s</DasType>
       <Position>1</Position>
     </argument>
-    <argument id="467" parent="450" name="name">
+    <argument id="468" parent="450" name="name">
       <DasType>text|0s</DasType>
       <Position>2</Position>
     </argument>
-    <argument id="468" parent="451">
+    <argument id="469" parent="451">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="469" parent="452">
+    <argument id="470" parent="452">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="470" parent="453">
+    <argument id="471" parent="453">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="471" parent="454">
+    <argument id="472" parent="454">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <argument id="472" parent="455">
+    <argument id="473" parent="455">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>uuid|0s</DasType>
     </argument>
-    <column id="473" parent="457" name="idBenutzer">
+    <column id="474" parent="457" name="idBenutzer">
       <DasType>uuid|0s</DasType>
       <DefaultExpression>uuid_generate_v4()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>136100</StateNumber>
+      <StateNumber>136145</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="474" parent="457" name="benutzername">
+    <column id="475" parent="457" name="benutzername">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>136100</StateNumber>
+      <StateNumber>136145</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="475" parent="457" name="vorname">
+    <column id="476" parent="457" name="vorname">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>136100</StateNumber>
+      <StateNumber>136145</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="476" parent="457" name="nachname">
+    <column id="477" parent="457" name="nachname">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>136100</StateNumber>
+      <StateNumber>136145</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="477" parent="457" name="password">
+    <column id="478" parent="457" name="password">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>136100</StateNumber>
+      <StateNumber>136145</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="478" parent="457" name="kontonummer">
-      <DasType>integer|0s</DasType>
-      <Position>6</Position>
-      <StateNumber>136106</StateNumber>
-      <TypeId>23</TypeId>
-    </column>
-    <foreign-key id="479" parent="457" name="Benutzer_kontonummer_fkey">
-      <ColNames>kontonummer</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84381</ObjectId>
-      <RefColNames>kontonummer</RefColNames>
-      <RefColPositions>1</RefColPositions>
-      <StateNumber>136106</StateNumber>
-      <RefTableId>84368</RefTableId>
-      <RefTableName>Konto</RefTableName>
-      <RefTableKind>table</RefTableKind>
-    </foreign-key>
-    <index id="480" parent="457" name="Benutzer_pkey">
+    <index id="479" parent="457" name="Benutzer_pkey">
       <ColNames>idBenutzer</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84363</ObjectId>
+      <ObjectId>84446</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>136100</StateNumber>
+      <StateNumber>136145</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="481" parent="457" name="Benutzer_benutzername_key">
+    <index id="480" parent="457" name="Benutzer_benutzername_key">
       <ColNames>benutzername</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84365</ObjectId>
-      <StateNumber>136100</StateNumber>
+      <ObjectId>84448</ObjectId>
+      <StateNumber>136145</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="482" parent="457" name="Benutzer_pkey">
+    <key id="481" parent="457" name="Benutzer_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84364</ObjectId>
+      <ObjectId>84447</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>136100</StateNumber>
-      <UnderlyingIndexId>84363</UnderlyingIndexId>
+      <StateNumber>136145</StateNumber>
+      <UnderlyingIndexId>84446</UnderlyingIndexId>
     </key>
-    <key id="483" parent="457" name="Benutzer_benutzername_key">
+    <key id="482" parent="457" name="Benutzer_benutzername_key">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84366</ObjectId>
-      <StateNumber>136100</StateNumber>
-      <UnderlyingIndexId>84365</UnderlyingIndexId>
+      <ObjectId>84449</ObjectId>
+      <StateNumber>136145</StateNumber>
+      <UnderlyingIndexId>84448</UnderlyingIndexId>
     </key>
-    <column id="484" parent="458" name="kontonummer">
-      <DasType>integer|0s</DasType>
-      <DefaultExpression>nextval(&apos;&quot;Konto_kontonummer_seq&quot;&apos;::regclass)</DefaultExpression>
+    <column id="483" parent="458" name="kontonummer">
+      <DasType>char(8)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>136101</StateNumber>
-      <SequenceId>84367</SequenceId>
-      <TypeId>23</TypeId>
+      <StateNumber>136146</StateNumber>
+      <TypeId>1042</TypeId>
     </column>
-    <column id="485" parent="458" name="kontostand">
+    <column id="484" parent="458" name="kontostand">
       <DasType>numeric(15,2 digit)|0s</DasType>
       <DefaultExpression>0.00</DefaultExpression>
       <Position>2</Position>
-      <StateNumber>136101</StateNumber>
+      <StateNumber>136146</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="486" parent="458" name="idBenutzer">
+    <column id="485" parent="458" name="idBenutzer">
       <DasType>uuid|0s</DasType>
       <Position>3</Position>
-      <StateNumber>136105</StateNumber>
+      <StateNumber>136146</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <foreign-key id="487" parent="458" name="Konto_idBenutzer_fkey">
+    <foreign-key id="486" parent="458" name="Konto_idBenutzer_fkey">
       <ColNames>idBenutzer</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84376</ObjectId>
+      <ObjectId>84456</ObjectId>
       <RefColNames>idBenutzer</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>136105</StateNumber>
-      <RefTableId>84357</RefTableId>
+      <StateNumber>136146</StateNumber>
+      <RefTableId>84440</RefTableId>
       <RefTableName>Benutzer</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <index id="488" parent="458" name="Konto_pkey">
+    <index id="487" parent="458" name="Konto_pkey">
       <ColNames>kontonummer</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84373</ObjectId>
+      <ObjectId>84454</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>136101</StateNumber>
+      <StateNumber>136146</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <key id="488" parent="458" name="Konto_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>84455</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>136146</StateNumber>
+      <UnderlyingIndexId>84454</UnderlyingIndexId>
+    </key>
+    <column id="489" parent="459" name="idTransaktion">
+      <DasType>integer|0s</DasType>
+      <DefaultExpression>nextval(&apos;&quot;Transaktion_idTransaktion_seq&quot;&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>136153</StateNumber>
+      <SequenceId>84485</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="490" parent="459" name="kontonummer">
+      <DasType>char(8)|0s</DasType>
+      <Position>2</Position>
+      <StateNumber>136153</StateNumber>
+      <TypeId>1042</TypeId>
+    </column>
+    <column id="491" parent="459" name="empfaengerKontonummer">
+      <DasType>varchar(34)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>136153</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="492" parent="459" name="verwendungszweck">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>4</Position>
+      <StateNumber>136153</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="493" parent="459" name="betrag">
+      <DasType>numeric(15,2 digit)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>136153</StateNumber>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="494" parent="459" name="timestamp">
+      <DasType>timestamp|0s</DasType>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <Position>6</Position>
+      <StateNumber>136153</StateNumber>
+      <TypeId>1114</TypeId>
+    </column>
+    <foreign-key id="495" parent="459" name="Transaktion_kontonummer_fkey">
+      <ColNames>kontonummer</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>84493</ObjectId>
+      <RefColNames>kontonummer</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <StateNumber>136153</StateNumber>
+      <RefTableId>84450</RefTableId>
+      <RefTableName>Konto</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="496" parent="459" name="Transaktion_pkey">
+      <ColNames>idTransaktion</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>84491</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>136153</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="489" parent="458" name="Konto_pkey">
+    <key id="497" parent="459" name="Transaktion_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84374</ObjectId>
+      <ObjectId>84492</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>136101</StateNumber>
-      <UnderlyingIndexId>84373</UnderlyingIndexId>
+      <StateNumber>136153</StateNumber>
+      <UnderlyingIndexId>84491</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>

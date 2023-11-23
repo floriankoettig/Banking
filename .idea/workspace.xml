@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d37fd6d-de54-44a9-af8b-a41a857861c3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/insert_test_data.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.github/workflows/database_setup.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/database_setup.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e6b522aa-368c-44ca-80ca-a670e66b3156.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/e6b522aa-368c-44ca-80ca-a670e66b3156.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e6b522aa-368c-44ca-80ca-a670e66b3156/storage_v2/_src_/database/fmkoettig.-MeOLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/e6b522aa-368c-44ca-80ca-a670e66b3156/storage_v2/_src_/database/fmkoettig.-MeOLQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/init_db.sql" beforeDir="false" afterPath="$PROJECT_DIR$/init_db.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +92,11 @@
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
+      "PostgreSQL"
+    ]
   }
 }]]></component>
   <component name="RunManager">
@@ -120,7 +131,7 @@
       <workItem from="1699879592119" duration="2788000" />
       <workItem from="1699955614007" duration="1076000" />
       <workItem from="1700492087867" duration="6352000" />
-      <workItem from="1700761797640" duration="3646000" />
+      <workItem from="1700761797640" duration="6501000" />
     </task>
     <servers />
   </component>

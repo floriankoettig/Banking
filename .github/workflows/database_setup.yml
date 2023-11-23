@@ -14,3 +14,6 @@ jobs:
 
       - name: Execute SQL script on external database
         run: PGPASSWORD=password psql -h kdb.sh -p 6082 -d fmkoettig -U fmkoettig -f ./init_db.sql
+
+      - name: Insert Test Data
+        run: PGPASSWORD=password psql -h kdb.sh -p 6082 -d fmkoettig -U fmkoettig -f ./insert_test_data.sql
