@@ -1,0 +1,20 @@
+name: Setup Database
+
+on: [push]
+
+jobs:
+  setup-db:
+    runs-on: ubuntu-latest
+    env:
+      DB_USER: fmkoettig
+      DB_PASSWORD: password
+      DB_NAME: jdbc:postgresql://kdb.sh:6082/fmkoettig
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get -y install postgresql-client
+
+      - name: Execute SQL script
+        run: PGPASSWORD=${{ env.DB_PASSWORD }} psql -h localhost -d ${{ env.DB_NAME }} -U ${{ env.DB_USER }} -f ./.github/workflows/init_db.sql
