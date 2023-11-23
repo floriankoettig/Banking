@@ -13,4 +13,4 @@ jobs:
         run: sudo apt-get -y install postgresql-client
 
       - name: Execute SQL script on external database
-        run: PGPASSWORD=your_password psql -h kdb.sh -p 6082 -d fmkoettig -U your_username -f ./.github/workflows/init_db.sql
+        run: PGPASSWORD=password psql -h kdb.sh -p 6082 -d fmkoettig -U fmkoettig -f ./.github/workflows/init_db.sql
