@@ -1,12 +1,14 @@
+import exceptions.UserLoginException;
+import exceptions.UserRegistrationException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
 public class Benutzerverwaltung {
 
-    public void registrieren(String benutzername, String vorname, String nachname, String passwort) {
+    public void registrieren(String benutzername, String vorname, String nachname, String passwort) throws UserRegistrationException {
         try (var conn = DbConnection.getConnection();
              var stmt = conn.prepareStatement(
                      "INSERT INTO \"Benutzer\" (\"benutzername\", \"vorname\", \"nachname\", \"password\") VALUES (?, ?, ?, ?)")) {
@@ -18,11 +20,12 @@ public class Benutzerverwaltung {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            //todo: Exception werfen
+            //todo: prüfen
+            throw new UserRegistrationException("Fehler bei der Benutzerregistrierung", e);
         }
     }
 
-    public boolean anmelden(String benutzername, String passwort) {
+    public boolean anmelden(String benutzername, String passwort) throws UserLoginException {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(
                      "SELECT \"password\" FROM \"Benutzer\" WHERE \"benutzername\" = ?")) {
@@ -36,7 +39,8 @@ public class Benutzerverwaltung {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            //todo: Exception werfen
+            //todo: prüfen
+            throw new UserLoginException("Fehler bei der Benutzeranmeldung", e);
         }
         return false;
     }

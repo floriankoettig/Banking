@@ -1,7 +1,10 @@
+import exceptions.UserLoginException;
+import exceptions.UserRegistrationException;
+
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UserRegistrationException, UserLoginException {
         Scanner scanner = new Scanner(System.in);
         Benutzerverwaltung benutzerverwaltung = new Benutzerverwaltung();
         System.out.println("Willkommen bei der Bank!");
