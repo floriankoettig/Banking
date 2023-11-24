@@ -19,29 +19,37 @@ public class Main {
 
             switch (option) {
                 case 1: //Registrierung
-                    System.out.print("Benutzername eingeben: ");
-                    String benutzername = scanner.nextLine();
-                    System.out.print("Vorname eingeben: ");
-                    String vorname = scanner.nextLine();
-                    System.out.print("Nachname eingeben: ");
-                    String nachname = scanner.nextLine();
-                    System.out.print("Passwort eingeben: ");
-                    String passwort = scanner.nextLine();
+                    try {
+                        System.out.print("Benutzername eingeben: ");
+                        String benutzername = scanner.nextLine();
+                        System.out.print("Vorname eingeben: ");
+                        String vorname = scanner.nextLine();
+                        System.out.print("Nachname eingeben: ");
+                        String nachname = scanner.nextLine();
+                        System.out.print("Passwort eingeben: ");
+                        String passwort = scanner.nextLine();
 
-                    benutzerverwaltung.registrieren(benutzername, vorname, nachname, passwort);
-                    System.out.println("Benutzer erfolgreich registriert.");
+                        benutzerverwaltung.registrieren(benutzername, vorname, nachname, passwort);
+                        System.out.println("Benutzer erfolgreich registriert.");
+                    } catch ( UserRegistrationException e) {
+                        System.out.println("Fehler bei der Registrierung: " + e.getMessage());
+                    }
                     break;
                 case 2: //Anmeldung
-                    System.out.print("Benutzername eingeben: ");
-                    benutzername = scanner.nextLine();
-                    System.out.print("Passwort eingeben: ");
-                    passwort = scanner.nextLine();
+                    try {
+                        System.out.print("Benutzername eingeben: ");
+                        String benutzername = scanner.nextLine();
+                        System.out.print("Passwort eingeben: ");
+                        String passwort = scanner.nextLine();
 
-                    if (benutzerverwaltung.anmelden(benutzername, passwort)) {
-                        System.out.println("Anmeldung erfolgreich!");
-                        //todo: Weitere Aktionen nach erfolgreicher Anmeldung
-                    } else {
-                        System.out.println("Falsche Anmeldedaten.");
+                        if (benutzerverwaltung.anmelden(benutzername, passwort)) {
+                            System.out.println("Anmeldung erfolgreich!");
+                            //todo: Weitere Aktionen nach erfolgreicher Anmeldung
+                        } else {
+                            System.out.println("Falsche Anmeldedaten.");
+                        }                        
+                    } catch (UserLoginException e) {
+                        System.out.println("Fehler bei der Anmeldung: " + e.getMessage());
                     }
                     break;
                 case 3: //Beenden

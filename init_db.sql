@@ -1,10 +1,11 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS "Benutzer" (
     "idBenutzer" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    "benutzerkennung" VARCHAR(255) UNIQUE NOT NULL,
     "benutzername" VARCHAR(255) UNIQUE NOT NULL,
     "vorname" VARCHAR(255) NOT NULL,
     "nachname" VARCHAR(255) NOT NULL,
-    "password" VARCHAR(255) NOT NULL
+    "passwort" VARCHAR(255) NOT NULL
 --   keine FK reference zu "Konto", da 1:n besser
 --  "kontonummer" CHAR(8) REFERENCES "Konto"
 );
