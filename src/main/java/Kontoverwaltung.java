@@ -1,10 +1,10 @@
 import java.security.SecureRandom;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
 public class Kontoverwaltung {
-    private double kontostand;
     public int generiereKontonummer() {
         return new SecureRandom().nextInt(90000000) + 10000000;
     }
@@ -68,13 +68,12 @@ public class Kontoverwaltung {
         return kontostand;
     }
 
-    public void einzahlen(int kontonummer, double betrag) throws SQLException {
+    public void einzahlen(Connection conn, int kontonummer, double betrag) throws SQLException {
         if (betrag <= 0) {
             throw new IllegalArgumentException("Betrag muss positiv sein.");
         }
 
-        try (var conn = DbConnection.getConnection();
-             var stmt = conn.prepareStatement(
+        try (var stmt = conn.prepareStatement(
                      "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" + ? WHERE \"kontonummer\" = ?")) {
             stmt.setDouble(1, betrag);
             stmt.setString(2, String.valueOf(kontonummer));
@@ -86,13 +85,12 @@ public class Kontoverwaltung {
         }
     }
 
-    public void abheben(int kontonummer, double betrag) throws SQLException {
+    public void abheben(Connection conn, int kontonummer, double betrag) throws SQLException {
         if (betrag <= 0) {
             throw new IllegalArgumentException("Betrag muss positiv sein.");
         }
 
-        try (var conn = DbConnection.getConnection();
-             var stmt = conn.prepareStatement(
+        try (var stmt = conn.prepareStatement(
                      "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" - ? WHERE \"kontonummer\" = ? AND \"kontostand\" >= ?")) {
             stmt.setDouble(1, betrag);
             stmt.setString(2, String.valueOf(kontonummer));
@@ -105,7 +103,41 @@ public class Kontoverwaltung {
         }
     }
 
-    public void ueberweisungDurchfuehren(int kontonummer, int empfaengerKontonummer, double betrag) {
-        //todo: implementierung
+    public void ueberweisen(Connection conn, int kontonummer, int empfaengerKontonummer, double betrag, String verwendungszweck) throws SQLException {
+        if (betrag <= 0) {
+            throw new IllegalArgumentException("Betrag muss positiv sein.");
+        }
+        try {
+            conn = DbConnection.getConnection();
+            conn.setAutoCommit(false); // Beginn der Transaktion
+
+            // Abbuchung vom sendenden Konto
+            abheben(conn, kontonummer, betrag);
+
+            // Gutschrift auf dem empfangenden Konto
+            einzahlen(conn, empfaengerKontonummer, betrag);
+
+            // Speichern der Transaktion
+            try (var transStmt = conn.prepareStatement(
+                    "INSERT INTO \"Transaktion\" (\"kontonummer\", \"empfaengerKontonummer\", \"betrag\", \"verwendungszweck\") VALUES (?, ?, ?, ?)")) {
+                transStmt.setString(1, String.valueOf(kontonummer));
+                transStmt.setString(2, String.valueOf(empfaengerKontonummer));
+                transStmt.setDouble(3, betrag);
+                transStmt.setString(4, verwendungszweck);
+
+                transStmt.executeUpdate();
+            }
+
+            conn.commit(); // Transaktion abschließen
+        } catch (SQLException e) {
+            if (conn != null) {
+                conn.rollback(); // Transaktion zurückrollen bei Fehlern
+            }
+            throw e;
+        } finally {
+            if (conn != null) {
+                conn.setAutoCommit(true); // AutoCommit wieder aktivieren
+            }
+        }
     }
 }

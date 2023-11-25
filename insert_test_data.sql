@@ -8,6 +8,6 @@ VALUES
     ('12345678', 1000.00, 'b069b6c4-964b-4acd-b300-3f50b9e466b5'),
     ('87654321', 500.00, '553f85a8-3900-44ca-83ad-1c97bf67592d');
 
-INSERT INTO "Transaktion" (kontonummer, "empfaengerKontonummer", verwendungszweck, betrag)
+INSERT INTO "Transaktion" (kontonummer, "empfaengerKontonummer", betrag, verwendungszweck)
 VALUES
-    ('12345678', '87654321', 'Miete', 700.00);
+    ('12345678', '87654321', 700.00, 'Miete');

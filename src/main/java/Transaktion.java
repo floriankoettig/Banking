@@ -1,21 +1,16 @@
 public class Transaktion {
     //protected int idTransaktion;
     protected int kontonummer;
-    protected String empfaengerIBAN;
-    protected String verwendungszweck;
+    protected String empfaengerKontonummer;
+
     protected int betrag;
+    protected String verwendungszweck;
 
-    public Transaktion(int kontonummer, String empfaengerIBAN, String verwendungszweck, int betrag) {
+    public Transaktion(int kontonummer, String empfaengerKontonummer, int betrag, String verwendungszweck) {
         this.kontonummer = kontonummer;
-        this.empfaengerIBAN = empfaengerIBAN;
+        this.empfaengerKontonummer = empfaengerKontonummer;
+        this.betrag = betrag;
         this.verwendungszweck = verwendungszweck;
-        this.betrag = betrag;
-    }
-
-    public Transaktion(int kontonummer, String empfaengerIBAN, int betrag) {
-        this.kontonummer = kontonummer;
-        this.empfaengerIBAN = empfaengerIBAN;
-        this.betrag = betrag;
     }
 
     public int getKontonummer() {
@@ -26,20 +21,12 @@ public class Transaktion {
         this.kontonummer = kontonummer;
     }
 
-    public String getEmpfaengerIBAN() {
-        return empfaengerIBAN;
+    public String getEmpfaengerKontonummer() {
+        return empfaengerKontonummer;
     }
 
-    public void setEmpfaengerIBAN(String empfaengerIBAN) {
-        this.empfaengerIBAN = empfaengerIBAN;
-    }
-
-    public String getVerwendungszweck() {
-        return verwendungszweck;
-    }
-
-    public void setVerwendungszweck(String verwendungszweck) {
-        this.verwendungszweck = verwendungszweck;
+    public void setEmpfaengerKontonummer(String empfaengerKontonummer) {
+        this.empfaengerKontonummer = empfaengerKontonummer;
     }
 
     public int getBetrag() {
@@ -48,5 +35,13 @@ public class Transaktion {
 
     public void setBetrag(int betrag) {
         this.betrag = betrag;
+    }
+
+    public String getVerwendungszweck() {
+        return verwendungszweck;
+    }
+
+    public void setVerwendungszweck(String verwendungszweck) {
+        this.verwendungszweck = verwendungszweck;
     }
 }

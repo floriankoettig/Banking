@@ -1,6 +1,7 @@
 import exceptions.UserLoginException;
 import exceptions.UserRegistrationException;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -54,7 +55,8 @@ public class Main {
                                 System.out.println("1. Kontostand abfragen");
                                 System.out.println("2. Einzahlen");
                                 System.out.println("3. Abheben");
-                                System.out.println("4. Abmelden");
+                                System.out.println("4. Überweisen");
+                                System.out.println("5. Abmelden");
                                 System.out.print("Wähle eine Option: ");
                                 int optionAnmeldung = scanner.nextInt();
                                 scanner.nextLine();
@@ -71,8 +73,8 @@ public class Main {
                                         kontonummer = scanner.nextInt();*/
                                         System.out.print("Einzahlungsbetrag eingeben: ");
                                         double betragEinzahlen = scanner.nextDouble();
-                                        try {
-                                            kontoverwaltung.einzahlen(kontonummer, betragEinzahlen);
+                                        try (Connection conn = DbConnection.getConnection()){
+                                            kontoverwaltung.einzahlen(conn, kontonummer, betragEinzahlen);
                                             System.out.println("Betrag erfolgreich eingezahlt.");
                                         } catch (SQLException e) {
                                             System.out.println("Fehler bei der Einzahlung: " + e.getMessage());
@@ -85,14 +87,33 @@ public class Main {
                                         kontonummer = scanner.nextInt();*/
                                         System.out.print("Abhebungsbetrag eingeben: ");
                                         double betragAbheben = scanner.nextDouble();
-                                        try {
-                                            kontoverwaltung.abheben(kontonummer, betragAbheben);
+                                        try (Connection conn = DbConnection.getConnection()){
+                                            kontoverwaltung.abheben(conn, kontonummer, betragAbheben);
                                             System.out.println("Betrag erfolgreich abgehoben.");
                                         } catch (SQLException e) {
                                             System.out.println("Fehler bei der Abhebung: " + e.getMessage());
                                         }
                                         break;
-                                    case 4: //abmelden
+                                    case 4: //überweisen
+                                        //todo: implemtierung für mehrere konten
+                                        /*System.out.println("Von welchem Konto möchten Sie überweisen?");
+                                        System.out.print("Kontonummer eingeben: ");
+                                        kontonummer = scanner.nextInt();*/
+                                        System.out.print("Kontonummer des Empfängers: ");
+                                        int empfaengerKontonummer = scanner.nextInt();
+                                        System.out.print("Überweisungsbetrag eingeben: ");
+                                        double betragUeberweisen = scanner.nextDouble();
+                                        scanner.nextLine();
+                                        System.out.print("Verwendungszweck eingeben: ");
+                                        String verwendungszweck = scanner.nextLine();
+                                        try (Connection conn = DbConnection.getConnection()) {
+                                            kontoverwaltung.ueberweisen(conn, kontonummer, empfaengerKontonummer, betragUeberweisen, verwendungszweck);
+                                            System.out.println("Betrag erfolgreich überwiesen.");
+                                        } catch (SQLException e) {
+                                            System.out.println("Fehler bei der Überweisung: " + e.getMessage());
+                                        }
+                                        break;
+                                    case 5: //abmelden
                                         angemeldet = false;
                                         break;
                                     default:

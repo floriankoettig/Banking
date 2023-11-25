@@ -479,7 +479,7 @@
 43447||43445|C|G
 43447||-9223372036854775808|T|G
 43447||43445|T|G</Grants>
-      <IntrospectionStateNumber>136197</IntrospectionStateNumber>
+      <IntrospectionStateNumber>136288</IntrospectionStateNumber>
       <ServerVersion>14.1</ServerVersion>
       <StartupTime>1696372510</StartupTime>
       <TimeZones>true ACDT
@@ -1421,7 +1421,7 @@ false posixrules
 13390||10|C|G
 13390||-9223372036854775808|U|G
 13390||10|U|G</Grants>
-      <IntrospectionStateNumber>136197</IntrospectionStateNumber>
+      <IntrospectionStateNumber>136288</IntrospectionStateNumber>
       <ObjectId>16417</ObjectId>
       <OwnerName>fmkoettig</OwnerName>
     </database>
@@ -5469,7 +5469,7 @@ false posixrules
     <schema id="445" parent="38" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>136197</IntrospectionStateNumber>
+      <IntrospectionStateNumber>136288</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>135856</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -5583,10 +5583,10 @@ false posixrules
     </routine>
     <sequence id="456" parent="445" name="Transaktion_idTransaktion_seq">
       <DasType>integer|0s</DasType>
-      <ObjectId>84485</ObjectId>
-      <SequenceIdentity>1(4)</SequenceIdentity>
+      <ObjectId>84697</ObjectId>
+      <SequenceIdentity>1(1)</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>136153</StateNumber>
+      <StateNumber>136287</StateNumber>
       <OwnerName>fmkoettig</OwnerName>
     </sequence>
     <table id="457" parent="445" name="Benutzer">
@@ -5602,8 +5602,8 @@ false posixrules
       <OwnerName>fmkoettig</OwnerName>
     </table>
     <table id="459" parent="445" name="Transaktion">
-      <ObjectId>84486</ObjectId>
-      <StateNumber>136153</StateNumber>
+      <ObjectId>84698</ObjectId>
+      <StateNumber>136287</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>fmkoettig</OwnerName>
     </table>
@@ -5811,58 +5811,69 @@ false posixrules
       <DefaultExpression>nextval(&apos;&quot;Transaktion_idTransaktion_seq&quot;&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>136153</StateNumber>
-      <SequenceId>84485</SequenceId>
+      <StateNumber>136287</StateNumber>
+      <SequenceId>84697</SequenceId>
       <TypeId>23</TypeId>
     </column>
     <column id="493" parent="459" name="kontonummer">
       <DasType>char(8)|0s</DasType>
       <Position>2</Position>
-      <StateNumber>136153</StateNumber>
+      <StateNumber>136287</StateNumber>
       <TypeId>1042</TypeId>
     </column>
     <column id="494" parent="459" name="empfaengerKontonummer">
       <DasType>varchar(34)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>136153</StateNumber>
+      <StateNumber>136287</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="495" parent="459" name="verwendungszweck">
-      <DasType>varchar(255)|0s</DasType>
-      <Position>4</Position>
-      <StateNumber>136153</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="496" parent="459" name="betrag">
+    <column id="495" parent="459" name="betrag">
       <DasType>numeric(15,2 digit)|0s</DasType>
       <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StateNumber>136153</StateNumber>
+      <Position>4</Position>
+      <StateNumber>136287</StateNumber>
       <TypeId>1700</TypeId>
+    </column>
+    <column id="496" parent="459" name="verwendungszweck">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>5</Position>
+      <StateNumber>136287</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
     <column id="497" parent="459" name="timestamp">
       <DasType>timestamp|0s</DasType>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <Position>6</Position>
-      <StateNumber>136153</StateNumber>
+      <StateNumber>136287</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <index id="498" parent="459" name="Transaktion_pkey">
+    <foreign-key id="498" parent="459" name="Transaktion_kontonummer_fkey">
+      <ColNames>kontonummer</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>84705</ObjectId>
+      <RefColNames>kontonummer</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <StateNumber>136287</StateNumber>
+      <RefTableId>84536</RefTableId>
+      <RefTableName>Konto</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="499" parent="459" name="Transaktion_pkey">
       <ColNames>idTransaktion</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84491</ObjectId>
+      <ObjectId>84703</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>136153</StateNumber>
+      <StateNumber>136287</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="499" parent="459" name="Transaktion_pkey">
+    <key id="500" parent="459" name="Transaktion_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>84492</ObjectId>
+      <ObjectId>84704</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>136153</StateNumber>
-      <UnderlyingIndexId>84491</UnderlyingIndexId>
+      <StateNumber>136287</StateNumber>
+      <UnderlyingIndexId>84703</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>

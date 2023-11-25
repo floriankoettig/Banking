@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS "Transaktion" (
     "idTransaktion" SERIAL PRIMARY KEY,
     "kontonummer" CHAR(8) REFERENCES "Konto",
     "empfaengerKontonummer" VARCHAR(34) NOT NULL,
-    "verwendungszweck" VARCHAR(255),
     "betrag" DECIMAL(15,2) NOT NULL,
+    "verwendungszweck" VARCHAR(255),
     "timestamp" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
