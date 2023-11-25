@@ -1,6 +1,7 @@
 import exceptions.UserLoginException;
 import exceptions.UserRegistrationException;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
@@ -30,7 +31,6 @@ public class Main {
                         String passwort = scanner.nextLine();
 
                         benutzerverwaltung.registrieren(benutzername, vorname, nachname, passwort);
-                        System.out.println("Benutzer erfolgreich registriert.");
                     } catch ( UserRegistrationException e) {
                         System.out.println("Fehler bei der Registrierung: " + e.getMessage());
                     }
@@ -43,18 +43,18 @@ public class Main {
                         String passwort = scanner.nextLine();
 
                         if (benutzerverwaltung.anmelden(benutzername, passwort)) {
-                            System.out.println("Anmeldung erfolgreich!");
-                            //todo: kontonummer des benutzers ermitteln
-                            /*int kontonummer = ermittleKontonummer(benutzername);
                             Kontoverwaltung kontoverwaltung = new Kontoverwaltung();
+                            int kontonummer = kontoverwaltung.ermittleKontonummer(benutzername);
                             double kontostand = kontoverwaltung.kontostandAbfragen(kontonummer);
                             System.out.println("Kontonummer: " + kontonummer);
-                            System.out.println("Aktueller Kontostand: " + kontostand);*/
+                            System.out.println("Aktueller Kontostand: " + kontostand);
                         } else {
                             System.out.println("Falsche Anmeldedaten.");
                         }                        
                     } catch (UserLoginException e) {
                         System.out.println("Fehler bei der Anmeldung: " + e.getMessage());
+                    } catch (SQLException e) {
+                        System.out.println("Datenbankfehler: " + e.getMessage());
                     }
                     break;
                 case 3: //Beenden

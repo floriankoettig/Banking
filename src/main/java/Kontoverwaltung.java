@@ -6,6 +6,9 @@ import java.util.UUID;
 public class Kontoverwaltung {
 
     private double kontostand;
+    public int generiereKontonummer() {
+        return new SecureRandom().nextInt(90000000) + 10000000;
+    }
 
     public void erstellen(UUID idBenutzer) {
         int kontonummer = generiereKontonummer();
@@ -25,10 +28,24 @@ public class Kontoverwaltung {
         }
     }
 
-    public int generiereKontonummer() {
-        return new SecureRandom().nextInt(90000000) + 10000000;
-    }
+    public int ermittleKontonummer(String benutzername) throws SQLException {
+        int kontonummer = -1;
 
+        try (var conn = DbConnection.getConnection();
+             var stmt = conn.prepareStatement(
+                     "SELECT \"kontonummer\" FROM \"Konto\" JOIN \"Benutzer\" ON \"Konto\".\"idBenutzer\" = \"Benutzer\".\"idBenutzer\" WHERE \"Benutzer\".\"benutzername\" = ?")) {
+            stmt.setString(1, benutzername);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    kontonummer = rs.getInt("kontonummer");
+                } else {
+                    throw new SQLException("Kein Konto für Benutzer " + benutzername + " gefunden.");
+                }
+            }
+        }
+        return kontonummer;
+    }
 
     public double kontostandAbfragen(int kontonummer) {
         double kontostand = 0.0;
@@ -50,7 +67,6 @@ public class Kontoverwaltung {
             //todo: exception handling
             e.printStackTrace();
         }
-
         return kontostand;
     }
 
@@ -70,7 +86,7 @@ public class Kontoverwaltung {
         }
     }
 
-    public void ueberweisungDurchfuehren(int vonKontonummer, int zuKontonummer, double betrag) {
-        //todo: Logik zur Durchführung einer Überweisung
+    public void ueberweisungDurchfuehren(int kontonummer, int empfaengerKontonummer, double betrag) {
+        //todo: implementierung
     }
 }
