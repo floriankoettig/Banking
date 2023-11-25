@@ -6,8 +6,8 @@ import java.util.Properties;
 public class DbConnection {
     static Connection conn = null;
 
-    public static Connection getConnection() {
-        if (conn == null) {
+    public static Connection getConnection() throws SQLException {
+        if (conn == null || conn.isClosed()) {
             try {
                 var constr = "jdbc:postgresql://kdb.sh:6082/fmkoettig";
                 var user = System.getenv("DB_USER");
