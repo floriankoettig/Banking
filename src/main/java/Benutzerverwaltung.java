@@ -7,9 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Benutzerverwaltung {
-
     private static final Logger LOGGER = Logger.getLogger(Benutzerverwaltung.class.getName());
-
     private String generiereBenutzerkennung() {
         return "BK-" + UUID.randomUUID().toString().substring(0, 8);
     }

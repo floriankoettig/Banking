@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class Kontoverwaltung {
-
     private double kontostand;
     public int generiereKontonummer() {
         return new SecureRandom().nextInt(90000000) + 10000000;
@@ -59,7 +58,6 @@ public class Kontoverwaltung {
                 if (rs.next()) {
                     kontostand = rs.getDouble("kontostand");
                 } else {
-                    //wenn kein Konto mit der angegebenen Nummer gefunden wird
                     throw new SQLException("Kein Konto mit der angegebenen Kontonummer gefunden.");
                 }
             }
@@ -70,19 +68,40 @@ public class Kontoverwaltung {
         return kontostand;
     }
 
-    public void einzahlen(int kontonummer, double betrag) {
-        if (betrag > 0) {
-            this.kontostand += betrag;
-        } else {
-            throw new IllegalArgumentException("Betrag muss positiv sein");
+    public void einzahlen(int kontonummer, double betrag) throws SQLException {
+        if (betrag <= 0) {
+            throw new IllegalArgumentException("Betrag muss positiv sein.");
+        }
+
+        try (var conn = DbConnection.getConnection();
+             var stmt = conn.prepareStatement(
+                     "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" + ? WHERE \"kontonummer\" = ?")) {
+            stmt.setDouble(1, betrag);
+            stmt.setString(2, String.valueOf(kontonummer));
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Einzahlung fehlgeschlagen, Konto nicht gefunden.");
+            }
         }
     }
 
-    public void abheben(int kontonummer, double betrag) {
-        if (betrag > 0 && this.kontostand >= betrag) {
-            this.kontostand -= betrag;
-        } else {
-            throw new IllegalArgumentException("Ungültiger Betrag für Abhebung");
+    public void abheben(int kontonummer, double betrag) throws SQLException {
+        if (betrag <= 0) {
+            throw new IllegalArgumentException("Betrag muss positiv sein.");
+        }
+
+        try (var conn = DbConnection.getConnection();
+             var stmt = conn.prepareStatement(
+                     "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" - ? WHERE \"kontonummer\" = ? AND \"kontostand\" >= ?")) {
+            stmt.setDouble(1, betrag);
+            stmt.setString(2, String.valueOf(kontonummer));
+            stmt.setDouble(3, betrag);
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Abhebung fehlgeschlagen, unzureichender Kontostand oder Konto nicht gefunden.");
+            }
         }
     }
 
