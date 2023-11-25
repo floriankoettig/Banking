@@ -109,15 +109,11 @@ public class Kontoverwaltung {
         }
         try {
             conn = DbConnection.getConnection();
-            conn.setAutoCommit(false); // Beginn der Transaktion
+            conn.setAutoCommit(false);
 
-            // Abbuchung vom sendenden Konto
             abheben(conn, kontonummer, betrag);
-
-            // Gutschrift auf dem empfangenden Konto
             einzahlen(conn, empfaengerKontonummer, betrag);
 
-            // Speichern der Transaktion
             try (var transStmt = conn.prepareStatement(
                     "INSERT INTO \"Transaktion\" (\"kontonummer\", \"empfaengerKontonummer\", \"betrag\", \"verwendungszweck\") VALUES (?, ?, ?, ?)")) {
                 transStmt.setString(1, String.valueOf(kontonummer));
@@ -127,17 +123,28 @@ public class Kontoverwaltung {
 
                 transStmt.executeUpdate();
             }
-
-            conn.commit(); // Transaktion abschließen
+            conn.commit(); //abschließen
         } catch (SQLException e) {
             if (conn != null) {
-                conn.rollback(); // Transaktion zurückrollen bei Fehlern
+                conn.rollback(); //zurückrollen bei fehler
             }
             throw e;
         } finally {
             if (conn != null) {
-                conn.setAutoCommit(true); // AutoCommit wieder aktivieren
+                conn.setAutoCommit(true); //AutoCommit wieder aktivieren
             }
         }
+    }
+
+    public boolean isKontonummerValid(String kontonummer) {
+        return kontonummer.matches("\\d{8}");
+    }
+
+    public boolean isPasswortValid(String passwort) {
+        return passwort.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}");
+    }
+
+    public boolean isVerwendungszweckValid(String verwendungszweck) {
+        return verwendungszweck.matches("[a-zA-Z0-9\\s]+");
     }
 }

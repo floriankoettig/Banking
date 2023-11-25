@@ -50,8 +50,8 @@ public class Main {
                             int kontonummer = kontoverwaltung.ermittleKontonummer(benutzername);
                             System.out.println("Kontonummer: " + kontonummer);
 
-                            boolean angemeldet = true;
-                            while (angemeldet) {
+                            boolean isLoggedIn = true;
+                            while (isLoggedIn) {
                                 System.out.println("1. Kontostand abfragen");
                                 System.out.println("2. Einzahlen");
                                 System.out.println("3. Abheben");
@@ -100,21 +100,26 @@ public class Main {
                                         System.out.print("Kontonummer eingeben: ");
                                         kontonummer = scanner.nextInt();*/
                                         System.out.print("Kontonummer des Empfängers: ");
-                                        int empfaengerKontonummer = scanner.nextInt();
+                                        String empfaengerKontonummer = scanner.nextLine();
+                                        empfaengerKontonummer = empfaengerKontonummer.trim();
+                                        if (!kontoverwaltung.isKontonummerValid(empfaengerKontonummer)) {
+                                            System.out.println("Ungültige Kontonummer des Empfängers. Bitte gültige 8-stellige Kontonummer eingeben.");
+                                            break;
+                                        }
                                         System.out.print("Überweisungsbetrag eingeben: ");
                                         double betragUeberweisen = scanner.nextDouble();
                                         scanner.nextLine();
                                         System.out.print("Verwendungszweck eingeben: ");
                                         String verwendungszweck = scanner.nextLine();
                                         try (Connection conn = DbConnection.getConnection()) {
-                                            kontoverwaltung.ueberweisen(conn, kontonummer, empfaengerKontonummer, betragUeberweisen, verwendungszweck);
+                                            kontoverwaltung.ueberweisen(conn, kontonummer, Integer.parseInt(empfaengerKontonummer), betragUeberweisen, verwendungszweck);
                                             System.out.println("Betrag erfolgreich überwiesen.");
                                         } catch (SQLException e) {
                                             System.out.println("Fehler bei der Überweisung: " + e.getMessage());
                                         }
                                         break;
                                     case 5: //abmelden
-                                        angemeldet = false;
+                                        isLoggedIn = false;
                                         break;
                                     default:
                                         System.out.println("Ungültige Option.");
