@@ -111,6 +111,10 @@ public class Main {
                                         scanner.nextLine();
                                         System.out.print("Verwendungszweck eingeben: ");
                                         String verwendungszweck = scanner.nextLine();
+                                        if (!kontoverwaltung.isVerwendungszweckValid(verwendungszweck)) {
+                                            System.out.println("Ungültiger Verwendungszweck. Bitte nur Buchstaben, Zahlen und Leerzeichen verwenden.");
+                                            break;
+                                        }
                                         try (Connection conn = DbConnection.getConnection()) {
                                             kontoverwaltung.ueberweisen(conn, kontonummer, Integer.parseInt(empfaengerKontonummer), betragUeberweisen, verwendungszweck);
                                             System.out.println("Betrag erfolgreich überwiesen.");
