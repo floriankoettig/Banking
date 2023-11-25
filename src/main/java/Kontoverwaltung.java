@@ -1,18 +1,30 @@
 import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class Kontoverwaltung {
 
     private double kontostand;
 
-    public Konto erstellen(UUID idBenutzer) {
+    public void erstellen(UUID idBenutzer) {
         int kontonummer = generiereKontonummer();
         double kontostand = 0.0;
-        //todo: INSERT INTO TABLE "Konto"
-        return new Konto(kontonummer, kontostand, idBenutzer);
+
+        try (var conn = DbConnection.getConnection();
+             var stmt = conn.prepareStatement(
+                     "INSERT INTO \"Konto\" (\"kontonummer\", \"kontostand\", \"idBenutzer\") VALUES (?, ?, ?)")) {
+            stmt.setString(1, String.format("%08d", kontonummer));
+            stmt.setDouble(2, kontostand);
+            stmt.setObject(3, idBenutzer);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            //todo: Excecption werfen
+            e.printStackTrace();
+        }
     }
 
-    private int generiereKontonummer() {
+    public int generiereKontonummer() {
         return new SecureRandom().nextInt(90000000) + 10000000;
     }
 
