@@ -44,7 +44,12 @@ public class Main {
 
                         if (benutzerverwaltung.anmelden(benutzername, passwort)) {
                             System.out.println("Anmeldung erfolgreich!");
-                            //todo: Weitere Aktionen nach erfolgreicher Anmeldung
+                            //todo: kontonummer des benutzers ermitteln
+                            /*int kontonummer = ermittleKontonummer(benutzername);
+                            Kontoverwaltung kontoverwaltung = new Kontoverwaltung();
+                            double kontostand = kontoverwaltung.kontostandAbfragen(kontonummer);
+                            System.out.println("Kontonummer: " + kontonummer);
+                            System.out.println("Aktueller Kontostand: " + kontostand);*/
                         } else {
                             System.out.println("Falsche Anmeldedaten.");
                         }                        

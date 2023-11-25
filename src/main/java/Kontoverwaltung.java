@@ -1,4 +1,5 @@
 import java.security.SecureRandom;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class Kontoverwaltung {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            //todo: Excecption werfen
+            //todo: exception handling
             e.printStackTrace();
         }
     }
@@ -30,9 +31,27 @@ public class Kontoverwaltung {
 
 
     public double kontostandAbfragen(int kontonummer) {
-        //todo: Logik, um den Kontostand des angegebenen Kontos abzufragen
-        //todo: Rückgabe des Kontostands
-        return 0;
+        double kontostand = 0.0;
+
+        try (var conn = DbConnection.getConnection();
+             var stmt = conn.prepareStatement(
+                     "SELECT \"kontostand\" FROM \"Konto\" WHERE \"kontonummer\" = ?")) {
+            stmt.setString(1, String.format("%08d", kontonummer));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    kontostand = rs.getDouble("kontostand");
+                } else {
+                    //wenn kein Konto mit der angegebenen Nummer gefunden wird
+                    throw new SQLException("Kein Konto mit der angegebenen Kontonummer gefunden.");
+                }
+            }
+        } catch (SQLException e) {
+            //todo: exception handling
+            e.printStackTrace();
+        }
+
+        return kontostand;
     }
 
     public void einzahlen(int kontonummer, double betrag) {
