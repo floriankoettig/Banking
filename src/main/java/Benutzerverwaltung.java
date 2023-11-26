@@ -1,75 +1,78 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Scanner;
-import java.util.HashMap;
-import java.util.Map;
+import exceptions.UserLoginException;
+import exceptions.UserRegistrationException;
+
+import java.sql.*;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Benutzerverwaltung {
-    private static Map<String, String> benutzerdaten = new HashMap<>();
-    static Connection conn = DbConnection.getConnection();
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("1. Registrieren");
-            System.out.println("2. Anmelden");
-            System.out.println("3. Beenden");
-            System.out.print("Wähle eine Option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
-
-            if (option == 1) {
-                System.out.println("Registrierung");
-                System.out.print("Benutzername eingeben: ");
-                String benutzername = scanner.nextLine();
-                System.out.print("Vorname eingeben: ");
-                String vorname = scanner.nextLine();
-                System.out.print("Nachname eingeben: ");
-                String nachname = scanner.nextLine();
-                System.out.print("Passwort eingeben: ");
-                String password = scanner.nextLine();
-                benutzerdaten.put(benutzername, password);
-                Benutzerverwaltung.registriereBenutzer(benutzername, vorname, nachname, password);
-            } else if (option == 2) {
-                System.out.println("Anmeldung");
-                System.out.print("Benutzername eingeben: ");
-                String benutzername = scanner.nextLine();
-                System.out.print("Passwort eingeben: ");
-                String passwort = scanner.nextLine();
-
-
-                if (benutzerdaten.containsKey(benutzername) && benutzerdaten.get(benutzername).equals(passwort)) {
-                    System.out.println("Anmeldung erfolgreich!");
-                } else {
-                    System.out.println("Falsche Anmeldedaten.");
-                }
-            } else if (option == 3) {
-                break;
-            }
-        }
+    private static final Logger LOGGER = Logger.getLogger(Benutzerverwaltung.class.getName());
+    private String generiereBenutzerkennung() {
+        return "BK-" + UUID.randomUUID().toString().substring(0, 8);
     }
-    private static void registriereBenutzer(String benutzername, String vorname, String nachname, String password) {
-        try {
-            String insertQuery = """
-            INSERT INTO "Benutzer" ("benutzername", "vorname", "nachname", "password")
-            VALUES (?, ?, ?, ?)
-            """;
-            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
 
-            preparedStatement.setString(1, benutzername);
-            preparedStatement.setString(2, vorname);
-            preparedStatement.setString(3, nachname);
-            preparedStatement.setString(4, password);
+    public void registrieren(String benutzername, String vorname, String nachname, String passwort) throws UserRegistrationException {
+        String benutzerkennung = generiereBenutzerkennung();
+        UUID idBenutzer;
 
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
+        try (var conn = DbConnection.getConnection();
+             var stmt = conn.prepareStatement(
+                     "INSERT INTO \"Benutzer\" (\"benutzerkennung\", \"benutzername\", \"vorname\", \"nachname\", \"passwort\") VALUES (?, ?, ?, ?, ?) RETURNING \"idBenutzer\"",
+                     Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, benutzerkennung);
+            stmt.setString(2, benutzername);
+            stmt.setString(3, vorname);
+            stmt.setString(4, nachname);
+            stmt.setString(5, passwort);
 
-            System.out.println("Benutzer erfolgreich registriert.");
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                LOGGER.log(Level.WARNING, "Benutzererstellung für {0} fehlgeschlagen, keine Zeilen betroffen.", benutzername);
+                throw new SQLException("Benutzererstellung fehlgeschlagen, keine Zeilen betroffen.");
+            }
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    idBenutzer = (UUID) rs.getObject("idBenutzer");
+                    LOGGER.log(Level.INFO, "Benutzer {0} erfolgreich registriert mit ID {1}.", new Object[]{benutzername, idBenutzer});
+                } else {
+                    LOGGER.log(Level.SEVERE, "Benutzererstellung für {0} fehlgeschlagen, keine ID abrufbar.", benutzername);
+                    throw new SQLException("Benutzererstellung fehlgeschlagen, keine ID abrufbar.");
+                }
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Fehler beim Registrieren des Benutzers.");
+            LOGGER.log(Level.SEVERE, "Fehler bei der Registrierung des Benutzers " + benutzername + ".", e);
+            throw new UserRegistrationException("Fehler bei der Benutzerregistrierung", e);
+        }
+        Kontoverwaltung kontoverwaltung = new Kontoverwaltung();
+        kontoverwaltung.erstellen(idBenutzer);
+    }
+
+    public boolean anmelden(String benutzername, String passwort) throws UserLoginException {
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT \"passwort\" FROM \"Benutzer\" WHERE \"benutzername\" = ?")) {
+            stmt.setString(1, benutzername);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String storedPassword = rs.getString("passwort");
+                    if (storedPassword.equals(passwort)) {
+                        LOGGER.log(Level.INFO, "Benutzer {0} erfolgreich angemeldet.", benutzername);
+                        return true; //erfolgreiche Anmeldung
+                    } else {
+                        LOGGER.log(Level.WARNING, "Falsches Passwort für Benutzer {0}.", benutzername);
+                        throw new UserLoginException("Falsches Passwort.");
+                    }
+                } else {
+                    LOGGER.log(Level.WARNING, "Benutzername {0} nicht gefunden.", benutzername);
+                    throw new UserLoginException("Benutzername nicht gefunden.");
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Fehler bei der Verbindung zur Datenbank.", e);
+            throw new UserLoginException("Fehler bei der Verbindung zur Datenbank.");
         }
     }
 }

@@ -1,0 +1,19 @@
+name: Setup External Database
+
+on: [push]
+
+jobs:
+  setup-db:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get -y install postgresql-client
+
+      - name: Execute SQL script on external database
+        run: PGPASSWORD=password psql -h kdb.sh -p 6082 -d fmkoettig -U fmkoettig -f ./init_db.sql
+
+      - name: Insert Test Data
+        run: PGPASSWORD=password psql -h kdb.sh -p 6082 -d fmkoettig -U fmkoettig -f ./insert_test_data.sql
