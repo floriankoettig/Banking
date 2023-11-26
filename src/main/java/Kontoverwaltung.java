@@ -3,6 +3,10 @@ import exceptions.DepositException;
 import exceptions.InvalidAmountException;
 import exceptions.WithdrawalException;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,8 +17,7 @@ import java.util.logging.Logger;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.PreparedStatement;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class Kontoverwaltung {
     private static final Logger LOGGER = Logger.getLogger(Kontoverwaltung.class.getName());
@@ -211,6 +214,78 @@ public class Kontoverwaltung {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public static boolean isUeberweisungValid(String[] parts) {
+        // Überprüfe, ob alle Teile vorhanden sind
+        if (parts.length != 4) {
+            System.out.println("Ungültige Anzahl von Feldern.");
+            return false;
+        }
+
+        // Validiere das Transaktionsdatum
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            dateFormat.setLenient(false);
+            Date transactionDate = dateFormat.parse(parts[0]);
+        } catch (ParseException e) {
+            System.out.println("Ungültiges Transaktionsdatum: " + parts[0]);
+            return false;
+        }
+
+        // Validiere die Empfänger Kontonummer (8 Ziffern)
+        if (!parts[1].matches("\\d{8}")) {
+            System.out.println("Ungültige Kontonummer: " + parts[1]);
+            return false;
+        }
+
+        // Validiere den Betrag (angenommen, dass es sich um eine positive Dezimalzahl handelt)
+        try {
+            double amount = Double.parseDouble(parts[3]);
+            if (amount <= 0) {
+                System.out.println("Ungültiger Betrag: " + parts[3]);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Ungültiger Betrag: " + parts[3]);
+            return false;
+        }
+        if (parts[1].equals(parts[2])) {
+            System.out.println("Absender kann nicht sich selbst sein: " + parts[2]);
+            return false;
+        }
+        return true;
+    }
+    public static void processTransaction(String[] parts,  int kontonummer) {
+        // Hier kannst du die Logik für die Verarbeitung der gültigen Transaktionen implementieren
+        // Zum Beispiel könntest du den Betrag von einem Konto auf ein anderes überweisen.
+
+        // Hier wird der Code für die Datenbank-Verbindung und das Einfügen der Transaktion in die Datenbank eingefügt.
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement transStmt = conn.prepareStatement(
+                     "INSERT INTO \"Transaktion\" (\"kontonummer\", \"empfaengerKontonummer\", \"betrag\" , \"verwendungszweck\") VALUES (?, ?,CAST(? AS NUMERIC), ?)")) {
+
+            // Setze Parameter für das Prepared Statement
+            transStmt.setString(1, (String.valueOf(kontonummer)));  // Absender-Kontonummer
+            transStmt.setString(4, parts[2]);  // Verwendungszweck
+            transStmt.setString(2, parts[1]);  // Empfänger-Kontonummer
+            try {
+                BigDecimal betrag = new BigDecimal(parts[3]);
+                transStmt.setBigDecimal(3, betrag);  // Betrag
+            } catch (NumberFormatException e) {
+                // Fehler bei der Konvertierung
+                System.out.println("Fehler beim Konvertieren des Betrags: " + parts[3]);
+                // Hier kannst du entscheiden, wie du mit ungültigen Beträgen umgehen möchtest
+            }
+
+            // Führe das SQL-Statement aus
+            transStmt.executeUpdate();
+
+            System.out.println("Transaktion erfolgreich in die Datenbank eingefügt: " + String.join("; ", parts));
+
+        } catch (SQLException | NumberFormatException e) {
+            e.printStackTrace();
+            System.out.println("Fehler beim Einfügen der Transaktion in die Datenbank: " + String.join("; ", parts));
         }
     }
 

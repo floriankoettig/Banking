@@ -17,9 +17,6 @@ public class KontoverwaltungTest {
 
     @Test
     public void erstellenTest() {
-        Kontoverwaltung kontoverwaltung = new Kontoverwaltung();
-        UUID idBenutzer = UUID.randomUUID();
-
-        assertDoesNotThrow(() -> kontoverwaltung.erstellen(idBenutzer));
+        assertDoesNotThrow(() -> new Kontoverwaltung().erstellen(UUID.randomUUID()));
     }
 }
