@@ -1,3 +1,4 @@
+import exceptions.AccountNotFoundException;
 import exceptions.UserLoginException;
 import exceptions.UserRegistrationException;
 
@@ -47,8 +48,13 @@ public class Main {
                             System.out.println("Anmeldung erfolgreich!");
 
                             Kontoverwaltung kontoverwaltung = new Kontoverwaltung();
-                            int kontonummer = kontoverwaltung.ermittleKontonummer(benutzername);
-                            System.out.println("Kontonummer: " + kontonummer);
+                            int kontonummer = -1;
+                            try {
+                                kontonummer = kontoverwaltung.ermittleKontonummer(benutzername);
+                                System.out.println("Kontonummer: " + kontonummer);
+                            } catch (AccountNotFoundException e) {
+                                System.out.println("Fehler: " + e.getMessage());
+                            }
 
                             boolean isLoggedIn = true;
                             while (isLoggedIn) {
@@ -135,8 +141,6 @@ public class Main {
                         }                        
                     } catch (UserLoginException e) {
                         System.out.println("Fehler bei der Anmeldung: " + e.getMessage());
-                    } catch (SQLException e) {
-                        System.out.println("Datenbankfehler: " + e.getMessage());
                     }
                     break;
                 case 3: //beenden

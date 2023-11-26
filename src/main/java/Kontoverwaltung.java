@@ -1,11 +1,16 @@
+import exceptions.AccountNotFoundException;
+
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Kontoverwaltung {
-    public int generiereKontonummer() {
+    private static final Logger LOGGER = Logger.getLogger(Kontoverwaltung.class.getName());
+    private int generiereKontonummer() {
         return new SecureRandom().nextInt(90000000) + 10000000;
     }
 
@@ -27,7 +32,7 @@ public class Kontoverwaltung {
         }
     }
 
-    public int ermittleKontonummer(String benutzername) throws SQLException {
+    public int ermittleKontonummer(String benutzername) throws AccountNotFoundException {
         int kontonummer = -1;
 
         try (var conn = DbConnection.getConnection();
@@ -38,10 +43,15 @@ public class Kontoverwaltung {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     kontonummer = rs.getInt("kontonummer");
+                    LOGGER.log(Level.INFO, "Kontonummer für Benutzer {0} erfolgreich ermittelt.", benutzername);
                 } else {
-                    throw new SQLException("Kein Konto für Benutzer " + benutzername + " gefunden.");
+                    LOGGER.log(Level.WARNING, "Kein Konto für Benutzer {0} gefunden.", benutzername);
+                    throw new AccountNotFoundException("No account found for user " + benutzername + ".");
                 }
             }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Datenbankfehler bei der Suche nach Kontonummer für Benutzer " + benutzername, e);
+            throw new AccountNotFoundException("Database error when searching for account number for user " + benutzername + ".");
         }
         return kontonummer;
     }
