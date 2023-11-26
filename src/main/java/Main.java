@@ -3,6 +3,7 @@ import exceptions.AccountNotFoundException;
 import exceptions.UserLoginException;
 import exceptions.UserRegistrationException;
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -84,7 +85,9 @@ public class Main {
                                         //todo: implementierung für mehrere konten
                                         /*System.out.println("Auf welches Konto möchten Sie einzahlen?");
                                         System.out.print("Kontonummer eingeben: ");
-                                        kontonummer = scanner.nextInt();*/
+                                        try{ kontonummer = scanner.nextInt();}catch (InputMismatchException e) {
+                                            System.out.println("falsche Eingabe");}*/
+
                                         System.out.print("Einzahlungsbetrag eingeben: ");
                                         double betragEinzahlen = scanner.nextDouble();
                                         try (Connection conn = DbConnection.getConnection()) {
@@ -99,8 +102,8 @@ public class Main {
                                         }
                                         break;
                                     case 3: //abheben
-                                        //todo: implementierung für mehrere konten
-                                        /*System.out.println("Von welchem Konto möchten Sie abheben?");
+                                        /*todo: implementierung für mehrere konten
+                                        System.out.println("Von welchem Konto möchten Sie abheben?");
                                         System.out.print("Kontonummer eingeben: ");
                                         kontonummer = scanner.nextInt();*/
                                         System.out.print("Abhebungsbetrag eingeben: ");

@@ -3,6 +3,7 @@ import exceptions.DepositException;
 import exceptions.InvalidAmountException;
 import exceptions.WithdrawalException;
 
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,8 @@ import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,7 +94,31 @@ public class Kontoverwaltung {
         return kontostand;
     }
 
+    private void checkBetrag(double betrag) throws InvalidAmountException {
+            if (betrag < 0) {
+                throw new InvalidAmountException("dfg");
+            }
+    }
+
+    private double eingabeBetrag(){
+        double ausgabe = 0.00;
+        try (Scanner scanner = new Scanner(System.in)){
+            System.out.println("Bitte geben Sie ihrern Betrag ein");
+            ausgabe = scanner.nextDouble();
+        } catch (InputMismatchException e){
+            System.out.println("Ungßltige Eingabe");
+            eingabeBetrag();
+        }
+        return ausgabe;
+    }
+
     public void einzahlen(Connection conn, int kontonummer, double betrag) throws InvalidAmountException, AccountNotFoundException, DepositException {
+
+        try {
+            checkBetrag(betrag);
+        } catch (InvalidAmountException e){
+            new Main();
+        }
         if (betrag <= 0) {
             throw new InvalidAmountException("Betrag muss positiv sein.");
         }
@@ -207,11 +234,13 @@ public class Kontoverwaltung {
                             .append("\n");
                 }
                 System.out.println("Daten erfolgreich in die CSV-Datei exportiert: " + fileName);
+            } catch (FileNotFoundException e) {
+                System.out.println("Datei nicht gefunden.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("SQL fehler.");
         }
     }
 
