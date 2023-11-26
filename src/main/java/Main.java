@@ -62,7 +62,8 @@ public class Main {
                                 System.out.println("2. Einzahlen");
                                 System.out.println("3. Abheben");
                                 System.out.println("4. Überweisen");
-                                System.out.println("5. Abmelden");
+                                System.out.println("5. Kontoauszug drucken");
+                                System.out.println("6. Abmelden");
                                 System.out.print("Wähle eine Option: ");
                                 int optionAnmeldung = scanner.nextInt();
                                 scanner.nextLine();
@@ -128,7 +129,14 @@ public class Main {
                                             System.out.println("Fehler bei der Überweisung: " + e.getMessage());
                                         }
                                         break;
-                                    case 5: //abmelden
+                                    case 5: //kontoauszug
+                                        try (Connection conn = DbConnection.getConnection()) {
+                                            Kontoverwaltung.exportTransactionsByAccountNumber(kontonummer);
+                                        } catch (SQLException e) {
+                                            System.out.println("Fehler bei der Überweisung: " + e.getMessage());
+                                        }
+                                break;
+                                    case 6: //abmelden
                                         isLoggedIn = false;
                                         break;
                                     default:
