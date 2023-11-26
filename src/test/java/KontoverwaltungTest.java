@@ -1,5 +1,9 @@
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import org.junit.Test;
+
+import java.util.UUID;
 
 public class KontoverwaltungTest {
     @Test
@@ -9,5 +13,13 @@ public class KontoverwaltungTest {
         assertFalse(kontoverwaltung.isKontonummerValid("1234"));
         assertFalse(kontoverwaltung.isKontonummerValid("abcd1234"));
         //weitere testfälle
+    }
+
+    @Test
+    public void erstellenTest() {
+        Kontoverwaltung kontoverwaltung = new Kontoverwaltung();
+        UUID idBenutzer = UUID.randomUUID();
+
+        assertDoesNotThrow(() -> kontoverwaltung.erstellen(idBenutzer));
     }
 }

@@ -1,13 +1,11 @@
-import exceptions.AccountNotFoundException;
-import exceptions.UserLoginException;
-import exceptions.UserRegistrationException;
+import exceptions.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws UserRegistrationException, UserLoginException {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Benutzerverwaltung benutzerverwaltung = new Benutzerverwaltung();
         System.out.println("Willkommen bei der Bank!");
@@ -51,10 +49,11 @@ public class Main {
                             int kontonummer = -1;
                             try {
                                 kontonummer = kontoverwaltung.ermittleKontonummer(benutzername);
-                                System.out.println("Kontonummer: " + kontonummer);
                             } catch (AccountNotFoundException e) {
                                 System.out.println("Fehler: " + e.getMessage());
+                                continue;
                             }
+                            System.out.println("Kontonummer: " + kontonummer);
 
                             boolean isLoggedIn = true;
                             while (isLoggedIn) {
@@ -74,7 +73,7 @@ public class Main {
                                         System.out.println("Aktueller Kontostand: " + kontostand);
                                         break;
                                     case 2: //einzahlen
-                                        //todo: implemtierung für mehrere konten
+                                        //todo: implementierung für mehrere konten
                                         /*System.out.println("Auf welches Konto möchten Sie einzahlen?");
                                         System.out.print("Kontonummer eingeben: ");
                                         kontonummer = scanner.nextInt();*/
@@ -83,12 +82,16 @@ public class Main {
                                         try (Connection conn = DbConnection.getConnection()){
                                             kontoverwaltung.einzahlen(conn, kontonummer, betragEinzahlen);
                                             System.out.println("Betrag erfolgreich eingezahlt.");
-                                        } catch (SQLException e) {
+                                        } catch (InvalidAmountException | AccountNotFoundException e) {
+                                            System.out.println("Fehler: " + e.getMessage());
+                                        } catch (DepositException e) {
                                             System.out.println("Fehler bei der Einzahlung: " + e.getMessage());
+                                        } catch (SQLException e) {
+                                            throw new RuntimeException(e);
                                         }
                                         break;
                                     case 3: //abheben
-                                        //todo: implemtierung für mehrere konten
+                                        //todo: implementierung für mehrere konten
                                         /*System.out.println("Von welchem Konto möchten Sie abheben?");
                                         System.out.print("Kontonummer eingeben: ");
                                         kontonummer = scanner.nextInt();*/
@@ -97,12 +100,16 @@ public class Main {
                                         try (Connection conn = DbConnection.getConnection()){
                                             kontoverwaltung.abheben(conn, kontonummer, betragAbheben);
                                             System.out.println("Betrag erfolgreich abgehoben.");
-                                        } catch (SQLException e) {
+                                        } catch (InvalidAmountException e) {
+                                            System.out.println("Fehler: " + e.getMessage());
+                                        } catch (WithdrawalException e) {
                                             System.out.println("Fehler bei der Abhebung: " + e.getMessage());
+                                        }catch (SQLException e) {
+                                            throw new RuntimeException(e);
                                         }
                                         break;
                                     case 4: //überweisen
-                                        //todo: implemtierung für mehrere konten
+                                        //todo: implementierung für mehrere konten
                                         /*System.out.println("Von welchem Konto möchten Sie überweisen?");
                                         System.out.print("Kontonummer eingeben: ");
                                         kontonummer = scanner.nextInt();*/
@@ -125,8 +132,14 @@ public class Main {
                                         try (Connection conn = DbConnection.getConnection()) {
                                             kontoverwaltung.ueberweisen(conn, kontonummer, Integer.parseInt(empfaengerKontonummer), betragUeberweisen, verwendungszweck);
                                             System.out.println("Betrag erfolgreich überwiesen.");
+                                        } catch (InvalidAmountException | AccountNotFoundException e) {
+                                            System.out.println("Fehler: " + e.getMessage());
+                                        } catch (DepositException e) {
+                                            System.out.println("Fehler bei der Einzahlung: " + e.getMessage());
+                                        } catch (WithdrawalException e) {
+                                            System.out.println("Fehler bei der Abhebung: " + e.getMessage());
                                         } catch (SQLException e) {
-                                            System.out.println("Fehler bei der Überweisung: " + e.getMessage());
+                                            System.out.println("Datenbankverbindungsfehler: " + e.getMessage());
                                         }
                                         break;
                                     case 5: //kontoauszug

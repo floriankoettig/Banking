@@ -1,4 +1,7 @@
 import exceptions.AccountNotFoundException;
+import exceptions.DepositException;
+import exceptions.InvalidAmountException;
+import exceptions.WithdrawalException;
 
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -83,47 +86,56 @@ public class Kontoverwaltung {
         return kontostand;
     }
 
-    public void einzahlen(Connection conn, int kontonummer, double betrag) throws SQLException {
+    public void einzahlen(Connection conn, int kontonummer, double betrag) throws InvalidAmountException, AccountNotFoundException, DepositException {
         if (betrag <= 0) {
-            throw new IllegalArgumentException("Betrag muss positiv sein.");
+            throw new InvalidAmountException("Betrag muss positiv sein.");
         }
 
         try (var stmt = conn.prepareStatement(
-                     "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" + ? WHERE \"kontonummer\" = ?")) {
+                "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" + ? WHERE \"kontonummer\" = ?")) {
             stmt.setDouble(1, betrag);
             stmt.setString(2, String.valueOf(kontonummer));
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
-                throw new SQLException("Einzahlung fehlgeschlagen, Konto nicht gefunden.");
+                LOGGER.log(Level.WARNING, "Konto mit Kontonummer {0} nicht gefunden.", kontonummer);
+                throw new AccountNotFoundException("Einzahlung fehlgeschlagen, Konto nicht gefunden.");
             }
+            LOGGER.log(Level.INFO, "Einzahlung von {0} auf Konto {1} erfolgreich.", new Object[]{betrag, kontonummer});
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Datenbankfehler bei der Einzahlung auf Konto " + kontonummer, e);
+            throw new DepositException("Fehler bei der Datenbankoperation während der Einzahlung." ,e);
         }
     }
 
-    public void abheben(Connection conn, int kontonummer, double betrag) throws SQLException {
+    public void abheben(Connection conn, int kontonummer, double betrag) throws WithdrawalException, InvalidAmountException {
         if (betrag <= 0) {
-            throw new IllegalArgumentException("Betrag muss positiv sein.");
+            throw new InvalidAmountException("Betrag muss positiv sein.");
         }
 
         try (var stmt = conn.prepareStatement(
-                     "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" - ? WHERE \"kontonummer\" = ? AND \"kontostand\" >= ?")) {
+                "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" - ? WHERE \"kontonummer\" = ? AND \"kontostand\" >= ?")) {
             stmt.setDouble(1, betrag);
             stmt.setString(2, String.valueOf(kontonummer));
             stmt.setDouble(3, betrag);
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
-                throw new SQLException("Abhebung fehlgeschlagen, unzureichender Kontostand oder Konto nicht gefunden.");
+                LOGGER.log(Level.WARNING, "Abhebung fehlgeschlagen. Unzureichender Kontostand oder Konto {0} nicht gefunden.", kontonummer);
+                throw new WithdrawalException("Abhebung fehlgeschlagen, unzureichender Kontostand oder Konto nicht gefunden.", null);
             }
+            LOGGER.log(Level.INFO, "Abhebung von {0} von Konto {1} erfolgreich.", new Object[]{betrag, kontonummer});
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Datenbankfehler bei der Abhebung von Konto " + kontonummer, e);
+            throw new WithdrawalException("Fehler bei der Datenbankoperation während der Abhebung.", e);
         }
     }
 
-    public void ueberweisen(Connection conn, int kontonummer, int empfaengerKontonummer, double betrag, String verwendungszweck) throws SQLException {
+    public void ueberweisen(Connection conn, int kontonummer, int empfaengerKontonummer, double betrag, String verwendungszweck) throws SQLException, InvalidAmountException, AccountNotFoundException, DepositException, WithdrawalException {
         if (betrag <= 0) {
-            throw new IllegalArgumentException("Betrag muss positiv sein.");
+            throw new InvalidAmountException("Betrag muss positiv sein.");
         }
         try {
-            conn = DbConnection.getConnection();
             conn.setAutoCommit(false);
 
             abheben(conn, kontonummer, betrag);
@@ -139,9 +151,12 @@ public class Kontoverwaltung {
                 transStmt.executeUpdate();
             }
             conn.commit(); //abschließen
-        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Überweisung von {0} von Konto {1} zu Konto {2} erfolgreich.",
+                    new Object[]{betrag, kontonummer, empfaengerKontonummer});
+        } catch (InvalidAmountException | AccountNotFoundException | DepositException | WithdrawalException e) {
+            LOGGER.log(Level.SEVERE, "Fehler bei der Überweisung: ", e);
             if (conn != null) {
-                conn.rollback(); //zurückrollen bei fehler
+                conn.rollback(); //zurückrollen bei Fehler
             }
             throw e;
         } finally {
@@ -150,6 +165,7 @@ public class Kontoverwaltung {
             }
         }
     }
+
     public static void exportTransactionsByAccountNumber(int kontonummer) {
         String query = "SELECT \"timestamp\", \"kontonummer\", \"empfaengerKontonummer\", \"betrag\", \"verwendungszweck\" FROM \"Transaktion\" WHERE \"kontonummer\" = ? OR \"empfaengerKontonummer\" = ?";
         String desktopPath = "C:\\Users\\U0125812\\Desktop";
