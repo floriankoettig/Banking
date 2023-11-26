@@ -10,8 +10,8 @@ public class DbConnection {
         if (conn == null || conn.isClosed()) {
             try {
                 var constr = "jdbc:postgresql://kdb.sh:6082/fmkoettig";
-                var user = System.getenv("DB_USER");
-                var password = System.getenv("DB_PASSWORD");
+                var user = "fmkoettig";
+                var password = "password";
 
                 var props = new Properties();
                 props.setProperty("user", user);

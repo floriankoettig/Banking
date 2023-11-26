@@ -3,6 +3,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Kontoverwaltung {
     public int generiereKontonummer() {
@@ -135,6 +140,63 @@ public class Kontoverwaltung {
             }
         }
     }
+    public static void exportTransactionsByAccountNumber(int kontonummer) {
+        String query = "SELECT \"timestamp\", \"kontonummer\", \"empfaengerKontonummer\", \"betrag\", \"verwendungszweck\" FROM \"Transaktion\" WHERE \"kontonummer\" = ? OR \"empfaengerKontonummer\" = ?";
+        String desktopPath = "C:\\Users\\U0125812\\Desktop";
+        String fileName = desktopPath + "\\Kontoauszug_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".csv";
+
+        try (Connection connection = DbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            // Parameter setzen
+            preparedStatement.setString(1, String.valueOf(kontonummer));
+            preparedStatement.setString(2, String.valueOf(kontonummer));
+
+            try (ResultSet resultSet = preparedStatement.executeQuery();
+                 FileWriter fileWriter = new FileWriter(fileName)) {
+
+                // CSV Header schreiben
+                fileWriter.append("Transaktionsdatum;Empfänger;Sender;Verwendungszweck;Betrag;neuer Kontostand\n");
+
+                double kontostand = 0.00;
+
+                // Daten in die CSV-Datei schreiben
+                while (resultSet.next()) {
+                    double betrag = Double.parseDouble(resultSet.getString("betrag"));
+
+                    // Berechne den Kontostand basierend auf dem Betrag
+                    if (resultSet.getString("empfaengerKontonummer").equals(kontonummer)) {
+                        kontostand += betrag; // Sender
+                    } else {
+                        kontostand -= betrag; // Empfänger
+                    }
+
+                    // Schreibe die Daten in die CSV-Datei
+                    fileWriter.append(resultSet.getString("timestamp"))
+                            .append(";")
+                            .append(resultSet.getString("empfaengerKontonummer"))
+                            .append(";")
+                            .append(resultSet.getString("kontonummer"))
+                            .append(";")
+                            .append(resultSet.getString("verwendungszweck"))
+                            .append(";")
+                            .append(resultSet.getString("betrag"))
+                            .append(";")
+                            .append(String.valueOf(kontostand))
+                            .append("\n");
+                }
+
+                System.out.println("Daten erfolgreich in die CSV-Datei exportiert: " + fileName);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public boolean isKontonummerValid(String kontonummer) {
         return kontonummer.matches("\\d{8}");
