@@ -25,7 +25,7 @@ public class Kontoverwaltung {
         return new SecureRandom().nextInt(90000000) + 10000000;
     }
 
-    public void erstellen(UUID idBenutzer) {
+    public void erstelleKonto(UUID idBenutzer) {
         int kontonummer = generiereKontonummer();
         double kontostand = 0.0;
 
@@ -67,7 +67,7 @@ public class Kontoverwaltung {
         return kontonummer;
     }
 
-    public double kontostandAbfragen(int kontonummer) {
+    public double kontostandAbfragen(int kontonummer) throws AccountNotFoundException{
         double kontostand = 0.0;
 
         try (var conn = DbConnection.getConnection();
@@ -78,13 +78,15 @@ public class Kontoverwaltung {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     kontostand = rs.getDouble("kontostand");
+                    LOGGER.log(Level.INFO, "Kontostand für Konto {0} erfolgreich abgefragt.", kontonummer);
                 } else {
-                    throw new SQLException("Kein Konto mit der angegebenen Kontonummer gefunden.");
+                    LOGGER.log(Level.WARNING, "Kein Konto mit der Kontonummer {0} gefunden.", kontonummer);
+                    throw new AccountNotFoundException("Kein Konto mit der angegebenen Kontonummer gefunden.");
                 }
             }
         } catch (SQLException e) {
-            //todo: exception handling
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Datenbankfehler bei der Abfrage des Kontostands für Konto " + kontonummer, e);
+            throw new AccountNotFoundException("Fehler bei der Datenbankoperation.");
         }
         return kontostand;
     }
@@ -93,7 +95,6 @@ public class Kontoverwaltung {
         if (betrag <= 0) {
             throw new InvalidAmountException("Betrag muss positiv sein.");
         }
-
         try (var stmt = conn.prepareStatement(
                 "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" + ? WHERE \"kontonummer\" = ?")) {
             stmt.setDouble(1, betrag);
@@ -115,7 +116,6 @@ public class Kontoverwaltung {
         if (betrag <= 0) {
             throw new InvalidAmountException("Betrag muss positiv sein.");
         }
-
         try (var stmt = conn.prepareStatement(
                 "UPDATE \"Konto\" SET \"kontostand\" = \"kontostand\" - ? WHERE \"kontonummer\" = ? AND \"kontostand\" >= ?")) {
             stmt.setDouble(1, betrag);
@@ -158,9 +158,7 @@ public class Kontoverwaltung {
                     new Object[]{betrag, kontonummer, empfaengerKontonummer});
         } catch (InvalidAmountException | AccountNotFoundException | DepositException | WithdrawalException e) {
             LOGGER.log(Level.SEVERE, "Fehler bei der Überweisung: ", e);
-            if (conn != null) {
-                conn.rollback(); //zurückrollen bei Fehler
-            }
+            conn.rollback(); //zurückrollen bei Fehler
             throw e;
         } finally {
             if (conn != null) {
@@ -171,7 +169,7 @@ public class Kontoverwaltung {
 
     public static void exportTransactionsByAccountNumber(int kontonummer) {
         String query = "SELECT \"timestamp\", \"kontonummer\", \"empfaengerKontonummer\", \"betrag\", \"verwendungszweck\" FROM \"Transaktion\" WHERE \"kontonummer\" = ? OR \"empfaengerKontonummer\" = ?";
-        String desktopPath = "C:\\Users\\U0125812\\Desktop";
+        String desktopPath = "C:\\Users\\koettig\\Downloads";
         String fileName = desktopPath + "\\Kontoauszug_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".csv";
 
         try (Connection connection = DbConnection.getConnection();
@@ -216,13 +214,13 @@ public class Kontoverwaltung {
             e.printStackTrace();
         }
     }
+
     public static boolean isUeberweisungValid(String[] parts) {
         // Überprüfe, ob alle Teile vorhanden sind
         if (parts.length != 4) {
             System.out.println("Ungültige Anzahl von Feldern.");
             return false;
         }
-
         // Validiere das Transaktionsdatum
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -232,13 +230,11 @@ public class Kontoverwaltung {
             System.out.println("Ungültiges Transaktionsdatum: " + parts[0]);
             return false;
         }
-
         // Validiere die Empfänger Kontonummer (8 Ziffern)
         if (!parts[1].matches("\\d{8}")) {
             System.out.println("Ungültige Kontonummer: " + parts[1]);
             return false;
         }
-
         // Validiere den Betrag (angenommen, dass es sich um eine positive Dezimalzahl handelt)
         try {
             double amount = Double.parseDouble(parts[3]);
@@ -256,6 +252,7 @@ public class Kontoverwaltung {
         }
         return true;
     }
+
     public static void processTransaction(String[] parts,  int kontonummer) {
         // Hier kannst du die Logik für die Verarbeitung der gültigen Transaktionen implementieren
         // Zum Beispiel könntest du den Betrag von einem Konto auf ein anderes überweisen.
@@ -264,8 +261,6 @@ public class Kontoverwaltung {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement transStmt = conn.prepareStatement(
                      "INSERT INTO \"Transaktion\" (\"kontonummer\", \"empfaengerKontonummer\", \"betrag\" , \"verwendungszweck\") VALUES (?, ?,CAST(? AS NUMERIC), ?)")) {
-
-            // Setze Parameter für das Prepared Statement
             transStmt.setString(1, (String.valueOf(kontonummer)));  // Absender-Kontonummer
             transStmt.setString(4, parts[2]);  // Verwendungszweck
             transStmt.setString(2, parts[1]);  // Empfänger-Kontonummer
@@ -273,16 +268,11 @@ public class Kontoverwaltung {
                 BigDecimal betrag = new BigDecimal(parts[3]);
                 transStmt.setBigDecimal(3, betrag);  // Betrag
             } catch (NumberFormatException e) {
-                // Fehler bei der Konvertierung
                 System.out.println("Fehler beim Konvertieren des Betrags: " + parts[3]);
                 // Hier kannst du entscheiden, wie du mit ungültigen Beträgen umgehen möchtest
             }
-
-            // Führe das SQL-Statement aus
             transStmt.executeUpdate();
-
             System.out.println("Transaktion erfolgreich in die Datenbank eingefügt: " + String.join("; ", parts));
-
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
             System.out.println("Fehler beim Einfügen der Transaktion in die Datenbank: " + String.join("; ", parts));

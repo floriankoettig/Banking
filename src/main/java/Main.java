@@ -73,8 +73,12 @@ public class Main {
 
                                 switch (optionAnmeldung) {
                                     case 1: //kontostand
-                                        double kontostand = kontoverwaltung.kontostandAbfragen(kontonummer);
-                                        System.out.println("Aktueller Kontostand: " + kontostand);
+                                        try {
+                                            double kontostand = kontoverwaltung.kontostandAbfragen(kontonummer);
+                                            System.out.println("Aktueller Kontostand: " + kontostand);
+                                        } catch (AccountNotFoundException e) {
+                                            System.out.println("Fehler: " + e.getMessage());
+                                        }
                                         break;
                                     case 2: //einzahlen
                                         //todo: implementierung für mehrere konten
@@ -157,7 +161,7 @@ public class Main {
                                         System.out.println("Bitte legen Sie die Datei in den Ablage Ordner und geben Sie den Dateinamen an.");
                                         System.out.print("Dateiname: ");
                                         String fileName = scanner.nextLine();
-                                        String filePath = "C:\\Users\\U0125812\\Desktop\\" + fileName; //lokal anpassen
+                                        String filePath = "C:\\Users\\koettig\\Downloads\\" + fileName; //lokal anpassen
 
                                         try (Scanner scanner1 = new Scanner(new File(filePath))) {
                                             //Überspringe die Header-Zeile

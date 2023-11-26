@@ -46,7 +46,7 @@ public class Benutzerverwaltung {
             throw new UserRegistrationException("Fehler bei der Benutzerregistrierung", e);
         }
         Kontoverwaltung kontoverwaltung = new Kontoverwaltung();
-        kontoverwaltung.erstellen(idBenutzer);
+        kontoverwaltung.erstelleKonto(idBenutzer);
     }
 
     public boolean anmelden(String benutzername, String passwort) throws UserLoginException {
