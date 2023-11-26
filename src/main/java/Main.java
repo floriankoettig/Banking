@@ -1,13 +1,14 @@
 import exceptions.AccountNotFoundException;
 import exceptions.UserLoginException;
 import exceptions.UserRegistrationException;
-
+import java.io.*;
+import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
+
 
 public class Main {
-    public static void main(String[] args) throws UserRegistrationException, UserLoginException {
+    public static void main(String[] args) throws UserRegistrationException, UserLoginException, FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
         Benutzerverwaltung benutzerverwaltung = new Benutzerverwaltung();
         System.out.println("Willkommen bei der Bank!");
@@ -63,7 +64,8 @@ public class Main {
                                 System.out.println("3. Abheben");
                                 System.out.println("4. Überweisen");
                                 System.out.println("5. Kontoauszug drucken");
-                                System.out.println("6. Abmelden");
+                                System.out.println("6. Massenüberweisung tätigen");
+                                System.out.println("7. Abmelden");
                                 System.out.print("Wähle eine Option: ");
                                 int optionAnmeldung = scanner.nextInt();
                                 scanner.nextLine();
@@ -135,8 +137,38 @@ public class Main {
                                         } catch (SQLException e) {
                                             System.out.println("Fehler bei der Überweisung: " + e.getMessage());
                                         }
-                                break;
-                                    case 6: //abmelden
+                                        break;
+                                    case 6: //Massenüberweisung
+                                        System.out.println("Bitte legen Sie die Datei in den Ablage Ordner und geben Sie den Dateinamen an.");
+                                        System.out.print("Dateiname: ");
+                                        String fileName = scanner.nextLine();
+                                        String filePath = "C:\\Users\\U0125812\\Desktop\\" +fileName; // Passe dies entsprechend an
+
+                                        try (Scanner scanner1 = new Scanner(new File(filePath))) {
+                                                // Überspringe die Header-Zeile
+                                                if (scanner1.hasNextLine()) {
+                                                    scanner1.nextLine();
+                                                }
+
+                                                // Durch die CSV-Datei iterieren
+                                                while (scanner1.hasNextLine()) {
+                                                    String line = scanner1.nextLine();
+                                                    String[] parts = line.split(";");
+
+                                                    // Validiere und verarbeite die Daten
+                                                    if (Kontoverwaltung.isUeberweisungValid(parts)) {
+                                                        Kontoverwaltung.processTransaction(parts, kontonummer);
+                                                    } else {
+                                                        System.out.println("Ungültige Transaktion: " + line);
+                                                    }
+                                                }
+
+                                                System.out.println("Massenüberweisungen erfolgreich verarbeitet.");
+                                            } catch(FileNotFoundException e) {
+                                            System.out.println("Datei wurde nicht gefunden.");
+                                        }
+                                    break;
+                                    case 7: //abmelden
                                         isLoggedIn = false;
                                         break;
                                     default:
