@@ -82,12 +82,6 @@ public class Main {
                                         }
                                         break;
                                     case 2: //einzahlen
-                                        //todo: implementierung für mehrere konten
-                                        /*System.out.println("Auf welches Konto möchten Sie einzahlen?");
-                                        System.out.print("Kontonummer eingeben: ");
-                                        try{ kontonummer = scanner.nextInt();}catch (InputMismatchException e) {
-                                            System.out.println("falsche Eingabe");}*/
-
                                         System.out.print("Einzahlungsbetrag eingeben: ");
                                         double betragEinzahlen = scanner.nextDouble();
                                         try (Connection conn = DbConnection.getConnection()) {
@@ -102,10 +96,6 @@ public class Main {
                                         }
                                         break;
                                     case 3: //abheben
-                                        /*todo: implementierung für mehrere konten
-                                        System.out.println("Von welchem Konto möchten Sie abheben?");
-                                        System.out.print("Kontonummer eingeben: ");
-                                        kontonummer = scanner.nextInt();*/
                                         System.out.print("Abhebungsbetrag eingeben: ");
                                         double betragAbheben = scanner.nextDouble();
                                         try (Connection conn = DbConnection.getConnection()) {
@@ -120,10 +110,6 @@ public class Main {
                                         }
                                         break;
                                     case 4: //überweisen
-                                        //todo: implementierung für mehrere konten
-                                        /*System.out.println("Von welchem Konto möchten Sie überweisen?");
-                                        System.out.print("Kontonummer eingeben: ");
-                                        kontonummer = scanner.nextInt();*/
                                         System.out.print("Kontonummer des Empfängers: ");
                                         String empfaengerKontonummer = scanner.nextLine();
                                         empfaengerKontonummer = empfaengerKontonummer.trim();

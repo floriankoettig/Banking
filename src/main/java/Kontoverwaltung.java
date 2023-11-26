@@ -214,11 +214,8 @@ public class Kontoverwaltung {
                 while (resultSet.next()) {
                     double betrag = Double.parseDouble(resultSet.getString("betrag"));
                     // Berechne den Kontostand basierend auf dem Betrag
-                    if (resultSet.getString("empfaengerKontonummer").equals(kontonummer)) {
-                        kontostand += betrag; // Sender
-                    } else {
-                        kontostand -= betrag; // Empfänger
-                    }
+                    resultSet.getString("empfaengerKontonummer");
+                    kontostand -= betrag; // Empfänger
                     // Schreibe die Daten in die CSV-Datei
                     fileWriter.append(resultSet.getString("timestamp"))
                             .append(";")
