@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class EinzahlenTest {
 
     @Test
-    public void enzahlenTest(){
+    public void einzahlenTest(){
         Kontoverwaltung kontoverwaltung = new Kontoverwaltung();
         try (Connection con = DbConnection.getConnection() ){
             kontoverwaltung.einzahlen(con, 12345678, 30);
@@ -24,3 +24,4 @@ public class EinzahlenTest {
         }
     }
 }
+
