@@ -213,13 +213,12 @@ public class Kontoverwaltung {
                 // Daten in die CSV-Datei schreiben
                 while (resultSet.next()) {
                     double betrag = Double.parseDouble(resultSet.getString("Betrag"));
-                    double aktuellerKontostand = Double.parseDouble(resultSet.getString("neuer Kontostand"));
 
                     // Berechne den Kontostand basierend auf dem Betrag und der Kontonummer
                     if (resultSet.getString("kontonummer").trim().equalsIgnoreCase(kontonummer)) {
-                        aktuellerKontostand -= betrag; // Sender
+                        kontostand -= betrag; // Sender
                     } else {
-                        aktuellerKontostand += betrag; // Empfänger
+                        kontostand += betrag; // Empfänger
                     }
                     // Schreibe die Daten in die CSV-Datei
                     fileWriter.append(resultSet.getString("timestamp"))
@@ -232,7 +231,7 @@ public class Kontoverwaltung {
                             .append(";")
                             .append(resultSet.getString("betrag"))
                             .append(";")
-                            .append(String.valueOf(aktuellerKontostand))
+                            .append(String.valueOf(kontostand))
                             .append("\n");
                 }
                 System.out.println("Daten erfolgreich in die CSV-Datei exportiert: " + fileName);
@@ -268,43 +267,6 @@ public class Kontoverwaltung {
             return false;
         }
 
-        // Validiere den Betrag (angenommen, dass es sich um eine positive Dezimalzahl handelt)
-        try {
-            double amount = Double.parseDouble(parts[3]);
-            if (amount <= 0) {
-                System.out.println("Ungültiger Betrag: " + parts[3]);
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Ungültiger Betrag: " + parts[3]);
-            return false;
-        }
-        if (parts[1].equals(parts[2])) {
-            System.out.println("Absender kann nicht sich selbst sein: " + parts[2]);
-            return false;
-        }
-        return true;
-    }
-    public static boolean isUeberweisungValid(String[] parts) {
-        // Überprüfe, ob alle Teile vorhanden sind
-        if (parts.length != 4) {
-            System.out.println("Ungültige Anzahl von Feldern.");
-            return false;
-        }
-        // Validiere das Transaktionsdatum
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-            dateFormat.setLenient(false);
-            Date transactionDate = dateFormat.parse(parts[0]);
-        } catch (ParseException e) {
-            System.out.println("Ungültiges Transaktionsdatum: " + parts[0]);
-            return false;
-        }
-        // Validiere die Empfänger Kontonummer (8 Ziffern)
-        if (!parts[1].matches("\\d{8}")) {
-            System.out.println("Ungültige Kontonummer: " + parts[1]);
-            return false;
-        }
         // Validiere den Betrag (angenommen, dass es sich um eine positive Dezimalzahl handelt)
         try {
             double amount = Double.parseDouble(parts[3]);
