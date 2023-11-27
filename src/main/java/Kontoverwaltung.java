@@ -194,16 +194,16 @@ public class Kontoverwaltung {
         }
     }
 
-    public static void exportTransactionsByAccountNumber(int kontonummer) {
+    public static void exportTransactionsByAccountNumber(String kontonummer) {
         String query = "SELECT \"timestamp\", \"kontonummer\", \"empfaengerKontonummer\", \"betrag\", \"verwendungszweck\" FROM \"Transaktion\" WHERE \"kontonummer\" = ? OR \"empfaengerKontonummer\" = ?";
-        String desktopPath = "C:\\Users\\koettig\\Downloads";
+        String desktopPath = "C:\\Users\\U0125812\\Desktop";
         String fileName = desktopPath + "\\Kontoauszug_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".csv";
 
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             // Parameter setzen
-            preparedStatement.setString(1, String.valueOf(kontonummer));
-            preparedStatement.setString(2, String.valueOf(kontonummer));
+            preparedStatement.setString(1, kontonummer);
+            preparedStatement.setString(2, kontonummer);
 
             try (ResultSet resultSet = preparedStatement.executeQuery();
                  FileWriter fileWriter = new FileWriter(fileName)) {
@@ -212,10 +212,14 @@ public class Kontoverwaltung {
                 double kontostand = 0.00;
                 // Daten in die CSV-Datei schreiben
                 while (resultSet.next()) {
-                    double betrag = Double.parseDouble(resultSet.getString("betrag"));
-                    // Berechne den Kontostand basierend auf dem Betrag
-                    resultSet.getString("empfaengerKontonummer");
-                    kontostand -= betrag; // Empfänger
+                    double betrag = Double.parseDouble(resultSet.getString("Betrag"));
+
+                    // Berechne den Kontostand basierend auf dem Betrag und der Kontonummer
+                    if (resultSet.getString("kontonummer").trim().equalsIgnoreCase(kontonummer)) {
+                        kontostand -= betrag; // Sender
+                    } else {
+                        kontostand += betrag; // Empfänger
+                    }
                     // Schreibe die Daten in die CSV-Datei
                     fileWriter.append(resultSet.getString("timestamp"))
                             .append(";")
@@ -240,13 +244,13 @@ public class Kontoverwaltung {
             System.out.println("SQL fehler.");
         }
     }
-
     public static boolean isUeberweisungValid(String[] parts) {
         // Überprüfe, ob alle Teile vorhanden sind
         if (parts.length != 4) {
             System.out.println("Ungültige Anzahl von Feldern.");
             return false;
         }
+
         // Validiere das Transaktionsdatum
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -256,11 +260,13 @@ public class Kontoverwaltung {
             System.out.println("Ungültiges Transaktionsdatum: " + parts[0]);
             return false;
         }
+
         // Validiere die Empfänger Kontonummer (8 Ziffern)
         if (!parts[1].matches("\\d{8}")) {
             System.out.println("Ungültige Kontonummer: " + parts[1]);
             return false;
         }
+
         // Validiere den Betrag (angenommen, dass es sich um eine positive Dezimalzahl handelt)
         try {
             double amount = Double.parseDouble(parts[3]);
@@ -303,6 +309,7 @@ public class Kontoverwaltung {
             e.printStackTrace();
             System.out.println("Fehler beim Einfügen der Transaktion in die Datenbank: " + String.join("; ", parts));
         }
+
     }
 
     public boolean isKontonummerValid(String kontonummer) {
